@@ -16,14 +16,14 @@
     <hr class="sidebar-divider">
 
     <div class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('admin.products.index') }}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Products</span></a>
     </div>
 
     <!-- Nav Item - Tables -->
     <div class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('admin.categories.index') }}">
             <i class="fas fa-fw fa-table"></i>
             <span>Categories</span></a>
     </div>

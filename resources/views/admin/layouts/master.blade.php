@@ -9,7 +9,7 @@
 <div id="wrapper">
     @include('admin.layouts.partials.sidebar')
     <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
+        <div id="content" style="background-color: white;">
             @include('admin.layouts.partials.header')
             @yield('content')
         </div>

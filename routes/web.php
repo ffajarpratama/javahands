@@ -27,10 +27,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
 //ADMIN DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'dashboard'])
         ->name('dashboard');
+
+    Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class);
+    Route::get('/products/category/{category}', [\App\Http\Controllers\Admin\ProductController::class, 'getProductByCategory'])
+        ->name('products.get_by_category');
+    Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class)
+        ->except('show');
 });
 
-Route::resource('/products', ProductController::class);
-Route::get('/products/category/{category}', [ProductController::class, 'getProductByCategory'])
-    ->name('products.get_by_category');
+//USER ROUTES
+Route::prefix('user')->name('user.')->group(function () {
+    Route::resource('/products', ProductController::class);
+    Route::get('/products/category/{category}', [ProductController::class, 'getProductByCategory'])
+        ->name('products.get_by_category');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

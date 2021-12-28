@@ -4,9 +4,9 @@
         <div class="row justify-content-center">
             <div class="col-md-3">
                 <h3>Product Categories</h3>
-                <a href="{{ route('products.index') }}">All Products {{ $allProductCount }}</a> <br>
+                <a href="{{ route('user.products.index') }}">All Products {{ $allProductCount }}</a> <br>
                 @foreach($categories as $category)
-                    <a href="{{ route('products.get_by_category', $category->name) }}">{{ $category->name }} {{ $category->products->count() }}</a> <br>
+                    <a href="{{ route('user.products.get_by_category', $category->name) }}">{{ $category->name }} {{ $category->products->count() }}</a> <br>
                 @endforeach
             </div>
             <div class="col-md-9">
