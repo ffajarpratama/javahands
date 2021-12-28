@@ -70,4 +70,12 @@
         text-decoration: underline;
         border-color: transparent;
     }
+
+    .list-group-item.active {
+        z-index: 2;
+        font-weight: bold;
+        color: black;
+        background-color: transparent;
+        border-color: transparent;
+    }
 </style>

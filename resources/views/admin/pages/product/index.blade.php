@@ -23,32 +23,23 @@
         <div class="row">
             <div class="col-md-3" style="border-right: 1px solid rgba(86, 65, 52, 0.2);">
                 <h5 class="font-weight-bold" style="color: black;">Product Categories</h5>
-                <a href="{{ route('admin.products.index') }}" class="small">All Products ({{ $allProductCount }})</a> <br>
-                @foreach($categories as $category)
-                    <a href="{{ route('admin.products.get_by_category', $category->name) }}" class="small">{{ $category->name }} ({{ $category->products->count() }})</a> <br>
-                @endforeach
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item small pl-0 pt-0 pr-0 pb-1" style="border-bottom: none;">
+                        <a href="{{ route('admin.products.index') }}" class="text-secondary">
+                            All Products ({{ $allProductCount }})
+                        </a>
+                    </li>
+                    @foreach($categories as $category)
+                        <li class="list-group-item small pl-0 pt-0 pr-0 pb-1" style="border-bottom: none">
+                            <a href="{{ route('admin.products.get_by_category', $category->name) }}" class="text-secondary">
+                                {{ $category->name }} ({{ $category->products->count() }})
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
             <div class="col-md-9 ps-5">
-{{--                <div class="row mb-4 d-flex justify-content-between">--}}
-{{--                    <div class="col-md-auto">--}}
-{{--                        <a href="{{ route('admin.products.create') }}" class="btn btn-jh-primary btn-icon-split">--}}
-{{--                            <div class="icon text-white">--}}
-{{--                                <i class="fas fa-plus"></i>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">Add New Product</div>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-auto">--}}
-{{--                        <a href="{{ route('admin.products.create') }}" class="btn btn-jh-primary btn-icon-split">--}}
-{{--                            <div class="icon text-white">--}}
-{{--                                <i class="fas fa-plus"></i>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">Add New Product</div>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
                 <div class="row">
                     <div class="col-md-10">
 
@@ -87,13 +78,15 @@
 
                                         <p class="mb-1 text-center">{{ $product->name }}</p>
                                         <div class="row justify-content-sm-center">
-                                            <div class="col-md-auto">
-                                                <p class="card-text" style="text-decoration: line-through;">
-                                                    {{ '$' . number_format($product->price) }}
-                                                </p>
-                                            </div>
+                                            @if($product->discount != 0)
+                                                <div class="col-md-auto">
+                                                    <p class="card-text" style="text-decoration: line-through;">
+                                                        {{ '$' . number_format($product->price) }}
+                                                    </p>
+                                                </div>
+                                            @endif
                                             <div class="col-md-auto px-0">
-                                                <h5 class="text-danger font-weight-bold mb-0">
+                                                <h5 class="{{$product->discount != 0 ? 'text-danger' : ''}} font-weight-bold mb-0">
                                                     {{ '$' . number_format($product->price - ($product->price * ($product->discount / 100))) }}
                                                 </h5>
                                             </div>

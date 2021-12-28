@@ -11,9 +11,6 @@ class Product extends Model
 
     protected $table = 'products';
     protected $guarded = [];
-    protected $casts = [
-        'rating' => 'decimal:1'
-    ];
 
     public function categories()
     {

@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -99,7 +98,6 @@ class ProductController extends Controller
             'discount' => (int)$request->discount,
             'description' => $request->description,
             'picture' => $imageName,
-            'rating' => 4.5
         ]);
         $product->categories()->attach($request->categories);
 
@@ -131,20 +129,21 @@ class ProductController extends Controller
             $column = 'likes_count';
             $comments = Comment::query()
                 ->where('product_id', $product_id)
+                ->with(['likes', 'dislikes', 'reply'])
                 ->withCount('likes')
                 ->orderBy($column, 'DESC')
                 ->get();
         } else if ($column == 'rating') {
             $column = 'rating';
             $comments = Comment::query()
-                ->with(['likes', 'dislikes'])
+                ->with(['likes', 'dislikes', 'reply'])
                 ->where('product_id', $product_id)
                 ->orderBy($column, 'DESC')
                 ->get();
         } else {
             $column = 'created_at';
             $comments = Comment::query()
-                ->with(['likes', 'dislikes'])
+                ->with(['likes', 'dislikes', 'reply'])
                 ->where('product_id', $product_id)
                 ->orderBy($column, 'DESC')
                 ->get();
@@ -156,9 +155,9 @@ class ProductController extends Controller
     private function processProductName($string)
     {
         $sanitizeName = trim(preg_replace('/[^a-zA-Z]+/', ' ', $string));
-        $productLastName = substr($sanitizeName, strrpos($sanitizeName, ' ') + 1);
+        $tempArray = explode(' ', $sanitizeName);
+        $productLastName = array_pop($tempArray);
         $newProductName = str_replace($productLastName, '', $sanitizeName);
-        $newProductName = trim($newProductName);
 
         return ['newProductName' => $newProductName, 'productLastName' => $productLastName];
     }
@@ -189,7 +188,6 @@ class ProductController extends Controller
             'discount' => (int)$request->discount,
             'description' => $request->description,
             'picture' => $productPictureName,
-            'rating' => 4.5
         ]);
         $product->categories()->sync($request->categories);
 

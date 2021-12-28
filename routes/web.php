@@ -31,8 +31,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
     Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class);
     Route::get('/products/category/{category}', [\App\Http\Controllers\Admin\ProductController::class, 'getProductByCategory'])
         ->name('products.get_by_category');
+
     Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class)
         ->except('show');
+
+    Route::post('/addReply/{comment}', [\App\Http\Controllers\Admin\ReplyController::class, 'addReply'])
+        ->name('reply.add');
+    Route::put('/updateReply/{reply}', [\App\Http\Controllers\Admin\ReplyController::class, 'updateReply'])
+        ->name('reply.update');
+    Route::delete('/deleteReply/{reply}', [\App\Http\Controllers\Admin\ReplyController::class, 'deleteReply'])
+        ->name('reply.delete');
 });
 
 //USER ROUTES

@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->string('picture');
             $table->string('price');
             $table->integer('discount');
-            $table->float('rating', 2, 1);
             $table->timestamps();
         });
     }

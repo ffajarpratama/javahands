@@ -31,4 +31,9 @@ class Comment extends Model
     {
         return $this->hasMany(Dislike::class);
     }
+
+    public function reply()
+    {
+        return $this->hasOne(Reply::class);
+    }
 }

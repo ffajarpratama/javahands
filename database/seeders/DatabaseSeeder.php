@@ -33,27 +33,30 @@ class DatabaseSeeder extends Seeder
             $product->categories()->attach($categories);
         }
 
-        $users = User::query()->where('id', '!=', 1)->get();
+        $users = User::query()->where('is_admin', '!=', true)->get();
         foreach ($users as $user) {
-            $products = Product::inRandomOrder()->take(rand(5, 10))->pluck('id');
+            $products = Product::inRandomOrder()->limit(10)->get();
             foreach ($products as $product) {
                 Comment::query()->create([
-                    'product_id' => $product,
+                    'product_id' => $product->id,
                     'user_id' => $user->id,
                     'description' => $faker->paragraph,
-                    'rating' => $faker->numberBetween(3, 5),
+                    'rating' => $faker->numberBetween(1, 5),
                     'picture' => $faker->imageUrl(200, 200, 'comments', true, 'products', true)
                 ]);
             }
-            $comments = Comment::inRandomOrder()->take(rand(5, 10))->pluck('id');
-            foreach ($comments as $comment) {
+            $commentsToLike = Comment::inRandomOrder()->limit(5)->get();
+            foreach ($commentsToLike as $comment) {
                 Like::query()->create([
-                    'comment_id' => $comment,
+                    'comment_id' => $comment->id,
                     'user_id' => $user->id
                 ]);
+            }
 
+            $commentsToDislike = Comment::inRandomOrder()->limit(5)->get();
+            foreach ($commentsToDislike as $comment) {
                 Dislike::query()->create([
-                    'comment_id' => $comment,
+                    'comment_id' => $comment->id,
                     'user_id' => $user->id
                 ]);
             }
