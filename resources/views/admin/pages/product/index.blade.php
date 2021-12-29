@@ -25,13 +25,13 @@
                 <h5 class="font-weight-bold" style="color: black;">Product Categories</h5>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item small pl-0 pt-0 pr-0 pb-1" style="border-bottom: none;">
-                        <a href="{{ route('admin.products.index') }}" class="text-secondary">
+                        <a href="{{ route('admin.products.index', ['category' => 'all_products']) }}" class="text-secondary">
                             All Products ({{ $allProductCount }})
                         </a>
                     </li>
                     @foreach($categories as $category)
                         <li class="list-group-item small pl-0 pt-0 pr-0 pb-1" style="border-bottom: none">
-                            <a href="{{ route('admin.products.get_by_category', $category->name) }}" class="text-secondary">
+                            <a href="{{ route('admin.products.index', ['category' => $category->name]) }}" class="text-secondary">
                                 {{ $category->name }} ({{ $category->products->count() }})
                             </a>
                         </li>
@@ -60,9 +60,9 @@
                                     </a>
 
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="{{ url()->current() . '?sortBy=newest' }}">Newest</a></li>
-                                        <li><a class="dropdown-item" href="{{ url()->current() . '?sortBy=rating' }}">Rating</a></li>
-                                        <li><a class="dropdown-item" href="{{ url()->current() . '?sortBy=price' }}">Price</a></li>
+                                        <li><a class="dropdown-item" href="{{ url()->current() . '?category=' . request()->query('category') . '&sortBy=newest' }}">Newest</a></li>
+                                        <li><a class="dropdown-item" href="{{ url()->current() . '?category=' . request()->query('category') . '&sortBy=rating' }}">Rating</a></li>
+                                        <li><a class="dropdown-item" href="{{ url()->current() . '?category=' . request()->query('category') . '&sortBy=price' }}">Price</a></li>
                                     </ul>
                                 </div>
                             </div>

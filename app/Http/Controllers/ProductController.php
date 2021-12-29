@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\CategoryService;
+use App\Http\Services\ProductService;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -9,12 +11,33 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    private $productService;
+    private $categoryService;
+
+    /**
+     * @param $productService
+     * @param $categoryService
+     */
+    public function __construct(ProductService $productService, CategoryService $categoryService)
     {
-        $products = Product::query()->with(['categories', 'comments.likes', 'comments.dislikes'])->get();
-        $categories = Category::all();
-        $allProductCount = $products->count();
+        $this->productService = $productService;
+        $this->categoryService = $categoryService;
+    }
+
+    public function home()
+    {
+        $products = Product::query()->latest()->take(4)->get();
+//        return $products;
+        return view('user.product.home', compact('products'));
+    }
+
+    public function index(Request $request)
+    {
+        $products = $this->productService->getAllProducts($request);
+        $categories = $this->categoryService->getAllCategories();
+        $allProductCount = $this->productService->getProductsCount();
         $users = User::query()->with('comments')->get();
+//        return $products->perPage();
 
 //        count how many comments of a user
 //        dd($users[1]->comments->count());

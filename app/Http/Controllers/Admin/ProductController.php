@@ -22,29 +22,21 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = $this->productService->getAllProducts($request);
-        $categories = $this->categoryService->getAllProducts();
+        $categories = $this->categoryService->getAllCategories();
         $allProductCount = $this->productService->getProductsCount();
-        return view('admin.pages.product.index', compact('products', 'categories', 'allProductCount'));
-    }
-
-    public function getProductByCategory($category, Request $request)
-    {
-        $allProductCount = $this->productService->getProductsCount();
-        $categories = $this->categoryService->getAllProducts();
-        $products = $this->productService->getProductsByCategory($request, $category);
         return view('admin.pages.product.index', compact('products', 'categories', 'allProductCount'));
     }
 
     public function create()
     {
-        $categories = $this->categoryService->getAllProducts();
+        $categories = $this->categoryService->getAllCategories();
         return view('admin.pages.product.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $this->productService->storeProduct($request);
-        return redirect()->route('admin.products.index')->with('success', 'New product added!');
+        return redirect()->back()->with('success', 'New product added!');
     }
 
     public function show(Product $product, Request $request)
@@ -58,19 +50,19 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = $this->categoryService->getAllProducts();
+        $categories = $this->categoryService->getAllCategories();
         return view('admin.pages.product.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, Product $product)
     {
         $this->productService->updateProduct($request, $product);
-        return redirect()->route('admin.products.index')->with('success', 'Product updated!');
+        return redirect()->route('admin.products.index', ['category' => 'all_products'])->with('success', 'Product updated!');
     }
 
     public function destroy(Product $product)
     {
         $this->productService->deleteProduct($product);
-        return redirect()->route('admin.products.index')->with('danger', 'Product deleted!');
+        return redirect()->route('admin.products.index', ['category' => 'all_products'])->with('danger', 'Product deleted!');
     }
 }

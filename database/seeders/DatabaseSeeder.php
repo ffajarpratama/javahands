@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
         ]);
-        Product::factory(10)->create();
+        Product::factory(20)->create();
         Category::factory(5)->create();
 
         foreach (Product::all() as $product) {

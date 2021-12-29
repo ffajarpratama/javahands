@@ -2,7 +2,7 @@
     <div class="col-md-10">
         <div class="row justify-content-center">
             <div class="col-md-4 d-inline-flex">
-                <a href="{{ route('admin.products.index') }}"
+                <a href="{{ route('admin.products.index', ['category' => 'all_products']) }}"
                    class="btn btn-jh-primary btn-icon-split mr-2 pl-0">
                     <div class="icon text-white">
                         <i class="fas fa-arrow-left"></i>

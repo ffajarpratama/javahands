@@ -111,7 +111,7 @@
 
                                 <div class="row mb-3 text-right">
                                     <div class="col">
-                                        <a href="{{ route('admin.products.index') }}"
+                                        <a href="{{ route('admin.products.index', ['category' => 'all_products']) }}"
                                            class="btn btn-outline-secondary">
                                             Back
                                         </a>

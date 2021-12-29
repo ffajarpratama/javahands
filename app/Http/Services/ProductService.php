@@ -2,69 +2,80 @@
 
 namespace App\Http\Services;
 
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Product;
 
 class ProductService
 {
-    public function getProductsCount()
+    public function getProductsCount(): int
     {
         return Product::all()->count();
     }
 
-    public function getAllProducts($request)
+    private function sortProductByDate($category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        $column = $request->query('sortBy');
-
-        if ($column == 'rating') {
-            $products = Product::query()
-                ->withAvg('comments', 'rating')
-                ->orderBy('comments_avg_rating', 'DESC')
-                ->paginate(15);
-        } else if ($column == 'price') {
-            $column = 'price';
-            $products = Product::query()
-                ->orderBy($column, 'ASC')
-                ->paginate(15);
-        } else {
-            $column = 'created_at';
-            $products = Product::query()
-                ->orderBy($column, 'DESC')
+        if ($category == 'all_products') {
+            return Product::query()
+                ->latest()
                 ->paginate(15);
         }
 
-        return $products;
+        $category = Category::query()
+            ->where('name', $category)
+            ->with('products')
+            ->first();
+
+        return $category->products()->latest()->paginate(15);
     }
 
-    public function getProductsByCategory($request, $category)
+    private function sortProductByPrice($category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        $sortBy = $request->query('sortBy');
-
-        if (is_null($sortBy)) {
-            $sortBy = 'id';
+        if ($category == 'all_products') {
+            return Product::query()
+                ->orderBy('price', 'ASC')
+                ->paginate(15);
         }
 
-        if ($sortBy != 'rating') {
-            if ($sortBy == 'newest') {
-                $sortBy = 'created_at';
-            } else if ($sortBy == 'price') {
-                $sortBy = 'price';
-            }
+        $category = Category::query()
+            ->where('name', $category)
+            ->with('products')
+            ->first();
 
-            $products = Product::query()
+        return $category->products()->orderBy('price', 'ASC')->paginate(15);
+    }
+
+    private function sortProductByRating($category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        if ($category == 'all_products') {
+            return Product::query()
                 ->join('category_product', 'products.id', '=', 'category_product.product_id')
                 ->join('categories', 'categories.id', '=', 'category_product.category_id')
-                ->where('categories.name', '=', $category)
-                ->orderBy('products.' . $sortBy, 'ASC')
-                ->paginate(15);
-        } else {
-            $products = Product::query()
-                ->join('category_product', 'products.id', '=', 'category_product.product_id')
-                ->join('categories', 'categories.id', '=', 'category_product.category_id')
-                ->where('categories.name', '=', $category)
                 ->withAvg('comments', 'rating')
                 ->orderBy('comments_avg_rating', 'DESC')
                 ->paginate(15);
+        }
+
+        return Product::query()
+            ->join('category_product', 'products.id', '=', 'category_product.product_id')
+            ->join('categories', 'categories.id', '=', 'category_product.category_id')
+            ->where('categories.name', '=', $category)
+            ->withAvg('comments', 'rating')
+            ->orderBy('comments_avg_rating', 'DESC')
+            ->paginate(15);
+    }
+
+    public function getAllProducts($request): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        $sortBy = $request->query('sortBy');
+        $category = $request->query('category');
+
+        if (is_null($sortBy) || $sortBy == 'newest') {
+            $products = $this->sortProductByDate($category);
+        } else if ($sortBy == 'price') {
+            $products = $this->sortProductByPrice($category);
+        } else if ($sortBy == 'rating') {
+            $products = $this->sortProductByRating($category);
         }
 
         return $products;
@@ -94,7 +105,7 @@ class ProductService
         return $product->categories()->attach($request->categories);
     }
 
-    private function processName($string, $ext)
+    private function processName($string, $ext): string
     {
         $string = strtolower($string);
         $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
@@ -103,7 +114,7 @@ class ProductService
         return $string . '.' . $ext;
     }
 
-    public function processProductName($string)
+    public function processProductName($string): array
     {
         $sanitizeName = trim(preg_replace('/[^a-zA-Z]+/', ' ', $string));
         $tempArray = explode(' ', $sanitizeName);

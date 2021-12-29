@@ -1,7 +1,7 @@
 <div class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #3A2218;">
 
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-        <img src="{{ asset('placeholders/jh-logo-text-white.png') }}" alt="sidebar_brand"
+        <img src="{{ asset('placeholders/logos/jh-logo-text-white.png') }}" alt="sidebar_brand"
              style="width: 65%; height: auto;">
     </a>
 
@@ -16,7 +16,7 @@
     <hr class="sidebar-divider">
 
     <div class="nav-item">
-        <a class="nav-link" href="{{ route('admin.products.index') }}">
+        <a class="nav-link" href="{{ route('admin.products.index', ['category' => 'all_products']) }}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Products</span></a>
     </div>

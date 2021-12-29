@@ -6,12 +6,12 @@ use App\Models\Category;
 
 class CategoryService
 {
-    public function getAllProductsPaginated()
+    public function getAllCategoriesPaginated(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return Category::query()->with('products')->latest()->paginate(5);
     }
 
-    public function getAllProducts()
+    public function getAllCategories()
     {
         return Category::all();
     }
