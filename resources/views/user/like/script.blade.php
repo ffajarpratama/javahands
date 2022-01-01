@@ -22,6 +22,10 @@
 
                     const likes_count = response.data;
                     like_counter.text(likes_count);
+                }).catch((error) => {
+                    if (error.response.status === 401) {
+                        alert('Please log in first!');
+                    }
                 });
         });
     });
@@ -50,7 +54,11 @@
 
                     const dislikes_count = response.data;
                     dislike_counter.text(dislikes_count);
-                });
+                }).catch((error) => {
+                if (error.response.status === 401) {
+                    alert('Please log in first!');
+                }
+            });
         });
     });
     //END DISLIKE AND UN-DISLIKE COMMENT SCRIPT

@@ -55,7 +55,7 @@ Route::get('/products/{product}', [ProductController::class, 'show'])
 //END PRODUCT ROUTES
 
 //USER ROUTES
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     //COMMENT ROUTES
     Route::post('/comments/{product}/{user}', [\App\Http\Controllers\CommentController::class, 'store'])
         ->name('comments.store');
