@@ -42,7 +42,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
         ->name('reply.delete');
 });
 
-//USER ROUTES
+//PRODUCT ROUTES
 Route::get('/products/home', [ProductController::class, 'home'])
     ->name('products.home');
 
@@ -52,15 +52,28 @@ Route::get('/products/search', [ProductController::class, 'search'])
     ->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->name('products.show');
+//END PRODUCT ROUTES
 
+//USER ROUTES
 Route::prefix('user')->name('user.')->group(function () {
-
+    //COMMENT ROUTES
     Route::post('/comments/{product}/{user}', [\App\Http\Controllers\CommentController::class, 'store'])
         ->name('comments.store');
     Route::put('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])
         ->name('comments.update');
     Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])
         ->name('comments.delete');
+    //END COMMENT ROUTES
+
+    //LIKE ROUTES
+    Route::post('/likes/{comment_id}', [\App\Http\Controllers\LikeController::class , 'like'])
+        ->name('likes.add');
+    //END LIKE ROUTES
+    //DISLIKE ROUTES
+    Route::post('/dislikes/{comment_id}', [\App\Http\Controllers\DislikeController::class, 'dislike'])
+        ->name('dislikes.add');
+    //END DISLIKE ROUTES
 });
+//END USER ROUTES
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

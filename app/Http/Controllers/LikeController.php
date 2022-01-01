@@ -3,27 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use App\Models\Dislike;
 use App\Models\Like;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class DislikeController extends Controller
+class LikeController extends Controller
 {
-    public function dislike($comment_id)
+    public function like($comment_id)
     {
         $comment = Comment::query()->findOrFail($comment_id);
-        $liked = Dislike::query()
+        $liked = Like::query()
             ->where('comment_id', $comment->id)
             ->where('user_id', auth()->id())
             ->first();
         if ($liked) {
             $liked->delete();
         } else {
-            Dislike::query()->create([
+            Like::query()->create([
                 'comment_id' => $comment->id,
                 'user_id' => auth()->id()
             ]);
         }
-        return response()->json($comment->dislikes->count());
+        return response()->json($comment->likes->count());
     }
 }

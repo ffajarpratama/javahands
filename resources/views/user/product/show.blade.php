@@ -404,19 +404,39 @@
                         Was this review helpful?
                     </p>
 
-                    <a href="" class="text-secondary me-1" style="text-decoration: none">
-                        <i class="far fa-thumbs-up"></i>
-                    </a>
+                    @if($comment->isAuthUserLikedPost() == true)
+                        <button class="btn btn-link text-secondary me-1 p-0 like-btn"
+                                data-content="{{ $comment->id }}"
+                                data-liked="1">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                    @else
+                        <button class="btn btn-link text-secondary me-1 p-0 like-btn"
+                                data-content="{{ $comment->id }}"
+                                data-liked="0">
+                            <i class="far fa-thumbs-up"></i>
+                        </button>
+                    @endif
 
-                    <p class="mb-0 me-4 text-secondary">
+                    <p class="mb-0 me-4 text-secondary like-counter-{{ $comment->id }}">
                         {{ $comment->likes->count() }}
                     </p>
 
-                    <a href="" class="text-secondary me-1" style="text-decoration: none">
-                        <i class="far fa-thumbs-down"></i>
-                    </a>
+                    @if($comment->isAuthUserDislikedPost() == true)
+                        <button class="btn btn-link text-secondary me-1 p-0 dislike-btn"
+                                data-content="{{ $comment->id }}"
+                                data-disliked="1">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    @else
+                        <button class="btn btn-link text-secondary me-1 p-0 dislike-btn"
+                                data-content="{{ $comment->id }}"
+                                data-disliked="0">
+                            <i class="far fa-thumbs-down"></i>
+                        </button>
+                    @endif
 
-                    <p class="mb-0 text-secondary">
+                    <p class="mb-0 text-secondary dislike-counter-{{ $comment->id }}">
                         {{ $comment->dislikes->count() }}
                     </p>
 
@@ -493,5 +513,6 @@
 @endsection
 @section('script')
     @include('user.product.modals.script')
+    @include('user.like.script')
     @include('admin.reply.modals.script')
 @endsection

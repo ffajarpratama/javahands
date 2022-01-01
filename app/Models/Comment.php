@@ -32,6 +32,16 @@ class Comment extends Model
         return $this->hasMany(Dislike::class);
     }
 
+    public function isAuthUserLikedPost()
+    {
+        return $this->likes()->where('user_id', auth()->id())->exists();
+    }
+
+    public function isAuthUserDislikedPost()
+    {
+        return $this->dislikes()->where('user_id', auth()->id())->exists();
+    }
+
     public function reply()
     {
         return $this->hasOne(Reply::class);
