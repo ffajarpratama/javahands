@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
         User::factory(4)->create();
         $this->call([
             AdminSeeder::class,
+            ProductSeeder::class,
+            CategorySeeder::class
         ]);
-        Product::factory(20)->create();
-        Category::factory(5)->create();
 
         foreach (Product::all() as $product) {
             $categories = Category::inRandomOrder()->take(rand(1, 3))->pluck('id');
@@ -40,9 +40,9 @@ class DatabaseSeeder extends Seeder
                 Comment::query()->create([
                     'product_id' => $product->id,
                     'user_id' => $user->id,
-                    'description' => $faker->paragraph,
+                    'title' => $faker->words(3, true),
+                    'description' => $faker->paragraphs(3, true),
                     'rating' => $faker->numberBetween(1, 5),
-                    'picture' => $faker->imageUrl(200, 200, 'comments', true, 'products', true)
                 ]);
             }
             $commentsToLike = Comment::inRandomOrder()->limit(5)->get();

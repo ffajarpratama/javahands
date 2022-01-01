@@ -22,11 +22,8 @@ class Product extends Model
         return $this->hasMany(Comment::class);
     }
 
-//    public function users()
-//    {
-//        return $this->belongsToMany(User::class, 'comments', 'product_id', 'user_id')
-//            ->as('comment')
-//            ->withPivot(['description', 'rating', 'picture'])
-//            ->withTimestamps();
-//    }
+    public function description()
+    {
+        return $this->hasOne(Description::class);
+    }
 }

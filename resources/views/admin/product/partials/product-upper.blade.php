@@ -2,8 +2,13 @@
     <div class="col-md-4">
         <div class="card shadow mb-2"
              style="width: 350px; height: 350px; border-radius: 15px; border: 1px solid #E0E0E0;">
-            <img src="{{ asset('products/' . $product->picture) }}" class="m-auto" alt="..."
-                 style="width: 200px; height: auto">
+            @if(!$product->picture)
+                <img src="{{ asset('placeholders/products/product-placeholder.png') }}" class="m-auto" alt="..."
+                     style="width: 200px; height: auto">
+            @else
+                <img src="{{ asset('storage/products/' . $product->picture) }}" class="m-auto" alt="..."
+                     style="width: 200px; height: auto">
+            @endif
         </div>
     </div>
 

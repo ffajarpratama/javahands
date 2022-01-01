@@ -13,7 +13,7 @@ class CategoryService
 
     public function getAllCategories()
     {
-        return Category::all();
+        return Category::query()->withCount('products')->get();
     }
 
     public function storeCategory($request)

@@ -28,7 +28,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
     Route::get('/dashboard', [AdminController::class, 'dashboard'])
         ->name('dashboard');
 
-    Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class);
+    Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class)
+        ->except(['index', 'show']);
 
     Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class)
         ->except('show');
@@ -45,8 +46,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
 Route::get('/products/home', [ProductController::class, 'home'])
     ->name('products.home');
 
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
+Route::get('/products/search', [ProductController::class, 'search'])
+    ->name('products.search');
+Route::get('/products/{product}', [ProductController::class, 'show'])
+    ->name('products.show');
+
 Route::prefix('user')->name('user.')->group(function () {
-    Route::resource('/products', ProductController::class);
+
+    Route::post('/comments/{product}/{user}', [\App\Http\Controllers\CommentController::class, 'store'])
+        ->name('comments.store');
+    Route::put('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])
+        ->name('comments.update');
+    Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])
+        ->name('comments.delete');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

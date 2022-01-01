@@ -72,9 +72,16 @@
                             @foreach($products as $product)
                                 <div class="col">
                                     <a href="{{ route('admin.products.show', $product->id) }}" style="text-decoration: none; color: black;">
-                                        <div class="card mb-2 mx-auto" style="width: 180px; height: auto; border-radius: 15px; border: 1px solid #E0E0E0">
-                                            <img src="{{ asset('products/' . $product->picture) }}" class="mx-auto" alt="..." style="width: 144px; height: auto;">
-                                        </div>
+
+                                        @if(!$product->picture)
+                                            <div class="card mb-2 mx-auto" style="width: 180px; height: auto; border-radius: 15px; border: 1px solid #E0E0E0">
+                                                <img src="{{ asset('placeholders/products/product-placeholder.png') }}" class="mx-auto" alt="..." style="width: 144px; height: auto;">
+                                            </div>
+                                        @else
+                                            <div class="card mb-2 mx-auto" style="width: 180px; height: auto; border-radius: 15px; border: 1px solid #E0E0E0">
+                                                <img src="{{ asset('storage/products/' . $product->picture) }}" class="mx-auto" alt="..." style="width: 144px; height: auto;">
+                                            </div>
+                                        @endif
 
                                         <p class="mb-1 text-center">{{ $product->name }}</p>
                                         <div class="row justify-content-sm-center">

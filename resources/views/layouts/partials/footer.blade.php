@@ -1,7 +1,7 @@
 <div class="container-fluid text-white" style="background: linear-gradient(89.54deg, #564134 13.07%, #1D0C03 66.62%);">
-    <div class="container">
+    <div class="container px-0">
         <footer>
-            <div class="row justify-content-between pt-5 pb-3">
+            <div class="row g-0 justify-content-between pt-5 pb-3">
                 <div class="col-md-auto">
                     <p class="mb-0" style="font-size: 30px; font-weight: 700;">Connect with Us</p>
 
@@ -17,12 +17,12 @@
                 </div>
             </div>
 
-            <div class="row justify-content-between pb-5">
+            <div class="d-flex flex-row justify-content-between pb-5">
                 <div class="col-md-auto">
                     <p class="mb-0 fs-6 fw-light">Copyright © 2021 javahands</p>
                 </div>
 
-                <div class="col-md-auto d-flex">
+                <div class="col-md-auto">
                     <p class="mb-0 fs-6 fw-light">Powered by javahands</p>
                 </div>
             </div>

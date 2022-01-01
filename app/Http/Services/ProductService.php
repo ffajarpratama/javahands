@@ -4,7 +4,12 @@ namespace App\Http\Services;
 
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Description;
 use App\Models\Product;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Salmanbe\FileName\FileName;
 
 class ProductService
 {
@@ -13,7 +18,7 @@ class ProductService
         return Product::all()->count();
     }
 
-    private function sortProductByDate($category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    private function sortProductByDate($category): LengthAwarePaginator
     {
         if ($category == 'all_products') {
             return Product::query()
@@ -29,7 +34,7 @@ class ProductService
         return $category->products()->latest()->paginate(15);
     }
 
-    private function sortProductByPrice($category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    private function sortProductByPrice($category): LengthAwarePaginator
     {
         if ($category == 'all_products') {
             return Product::query()
@@ -45,12 +50,10 @@ class ProductService
         return $category->products()->orderBy('price', 'ASC')->paginate(15);
     }
 
-    private function sortProductByRating($category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    private function sortProductByRating($category): LengthAwarePaginator
     {
         if ($category == 'all_products') {
-            return Product::query()
-                ->join('category_product', 'products.id', '=', 'category_product.product_id')
-                ->join('categories', 'categories.id', '=', 'category_product.category_id')
+            return Product::query()->with('comments')
                 ->withAvg('comments', 'rating')
                 ->orderBy('comments_avg_rating', 'DESC')
                 ->paginate(15);
@@ -65,20 +68,28 @@ class ProductService
             ->paginate(15);
     }
 
-    public function getAllProducts($request): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getAllProducts($request): LengthAwarePaginator
     {
         $sortBy = $request->query('sortBy');
         $category = $request->query('category');
 
-        if (is_null($sortBy) || $sortBy == 'newest') {
-            $products = $this->sortProductByDate($category);
-        } else if ($sortBy == 'price') {
-            $products = $this->sortProductByPrice($category);
-        } else if ($sortBy == 'rating') {
-            $products = $this->sortProductByRating($category);
+        if (!$category || !$sortBy) {
+            return Product::query()->latest()->paginate(15);
         }
 
-        return $products;
+        if ($sortBy == 'newest') {
+            return $this->sortProductByDate($category);
+        }
+
+        if ($sortBy == 'price') {
+            return $this->sortProductByPrice($category);
+        }
+
+        if ($sortBy == 'rating') {
+            return $this->sortProductByRating($category);
+        }
+
+        return Product::query()->latest()->paginate(15);
     }
 
     public function storeProduct($request)
@@ -87,31 +98,75 @@ class ProductService
             'name' => ['required'],
             'price' => ['required', 'numeric'],
             'discount' => ['required', 'numeric'],
+            'picture' => ['required', 'image', 'max:2048'],
+            'material' => ['required'],
+            'measurement' => ['required'],
             'description' => ['required'],
-            'picture' => ['required', 'image']
+            'additional_note' => ['required']
         ]);
 
         $imageExt = $request->file('picture')->getClientOriginalExtension();
-        $imageName = $this->processName($request->name, $imageExt);
-        $request->file('picture')->move(public_path('products'), $imageName);
+        $imageName = $request->name . '.' . $imageExt;
+        $imageName = FileName::get($imageName, ['timestamp' => 'Y-m-d']);
+        $request->file('picture')->storeAs('products', $imageName, 'public');
 
         $product = Product::query()->create([
             'name' => $request->name,
             'price' => $request->price,
             'discount' => (int)$request->discount,
-            'description' => $request->description,
             'picture' => $imageName,
+        ]);
+
+        Description::query()->create([
+            'product_id' => $product->id,
+            'material' => $request->material,
+            'measurement' => $request->measurement,
+            'description' => $request->description,
+            'additional_note' => $request->additional_note
         ]);
         return $product->categories()->attach($request->categories);
     }
 
-    private function processName($string, $ext): string
+    public function updateProduct($request, $product)
     {
-        $string = strtolower($string);
-        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-        $string = preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
-        return $string . '.' . $ext;
+        $request->validate([
+            'name' => ['required'],
+            'price' => ['required', 'numeric'],
+            'discount' => ['required', 'numeric'],
+            'picture' => ['max:2048'],
+            'material' => ['required'],
+            'measurement' => ['required'],
+            'description' => ['required'],
+            'additional_note' => ['required']
+        ]);
+
+        $newPictureName = $product->picture;
+
+        if ($request->file('picture')) {
+            $imageExt = $request->file('picture')->getClientOriginalExtension();
+            $newPictureName = $request->name . '.' . $imageExt;
+            if ($product->picture) {
+                Storage::disk('public')->delete('products/' . $product->picture);
+            }
+            $newPictureName = FileName::get($newPictureName, ['timestamp' => 'Y-m-d']);
+            $request->file('picture')->storeAs('products', $newPictureName, 'public');
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'discount' => (int)$request->discount,
+            'picture' => $newPictureName,
+        ]);
+        return $product->categories()->sync($request->categories);
+    }
+
+    public function deleteProduct($product)
+    {
+        if ($product->picture) {
+            Storage::disk('public')->delete('products/' . $product->picture);
+        }
+        return $product->delete();
     }
 
     public function processProductName($string): array
@@ -153,39 +208,5 @@ class ProductService
         }
 
         return $comments;
-    }
-
-    public function updateProduct($request, $product)
-    {
-        $productPictureName = $product->picture;
-        $filePath = public_path('products/' . $product->picture);
-
-        if ($request->file('picture')) {
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
-            $imageExt = $request->file('picture')->getClientOriginalExtension();
-            $productPictureName = $this->processName($request->name, $imageExt);
-            $request->file('picture')->move(public_path('products'), $productPictureName);
-        }
-
-        $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'discount' => (int)$request->discount,
-            'description' => $request->description,
-            'picture' => $productPictureName,
-        ]);
-
-        return $product->categories()->sync($request->categories);
-    }
-
-    public function deleteProduct($product)
-    {
-        $filePath = public_path('products/' . $product->picture);
-        if (file_exists($filePath)) {
-            unlink($filePath);
-        }
-        return $product->delete();
     }
 }

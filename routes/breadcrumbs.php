@@ -17,5 +17,11 @@ Breadcrumbs::for('products', function (BreadcrumbTrail $trail) {
 //PRODUCT CATEGORIES
 Breadcrumbs::for('product-categories', function (BreadcrumbTrail $trail) {
     $trail->parent('products');
-    $trail->push('Product Categories', route('user.products.index'));
+    $trail->push('Product Categories', route('products.index', ['category' => 'all_products']));
+});
+
+//PRODUCT DETAILS
+Breadcrumbs::for('product-details', function (BreadcrumbTrail $trail, $product) {
+    $trail->parent('product-categories');
+    $trail->push('Product Details', route('products.show', $product->id));
 });

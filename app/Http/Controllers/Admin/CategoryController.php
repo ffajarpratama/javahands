@@ -19,12 +19,12 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryService->getAllCategoriesPaginated();
-        return view('admin.pages.category.index', compact('categories'));
+        return view('admin.category.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('admin.pages.category.create');
+        return view('admin.category.create');
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        return view('admin.pages.category.edit', compact('category'));
+        return view('admin.category.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)

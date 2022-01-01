@@ -26,7 +26,7 @@
                 {{--PRODUCT DROPDOWN--}}
                 <div class="nav-item dropdown mx-3 my-auto">
                     <a id="navbarDropdown"
-                       class="nav-link fs-7 dropdown-toggle {{ Route::is('user.products.index') || Route::is('products.home') ? 'text-bistre' : 'text-seal-brown-50' }}"
+                       class="nav-link fs-7 dropdown-toggle {{ Route::is('products.index') || Route::is('products.home') ? 'text-bistre' : 'text-seal-brown-50' }}"
                        href="" role="button"
                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Product
@@ -34,18 +34,19 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item fs-7 text-seal-brown-50"
-                           href="{{ route('products.home') }}">
+                        <a class="dropdown-item fs-7 text-seal-brown-50" href="#" role="button">
                             Featured Products
                         </a>
 
+                        <hr class="dropdown-divider">
+
                         <a class="dropdown-item fs-7 text-seal-brown-50"
-                           href="{{ route('user.products.index', ['category' => 'all_products']) }}">
+                           href="{{ route('products.index', ['category' => 'all_products']) }}">
                             All Products
                         </a>
                         @foreach($categories as $category)
                             <a class="dropdown-item fs-7 text-seal-brown-50"
-                               href="{{ route('user.products.index', ['category' => $category->name]) }}">
+                               href="{{ route('products.index', ['category' => $category->name]) }}">
                                 {{ $category->name }}
                             </a>
                         @endforeach
@@ -62,59 +63,63 @@
                 </div>
                 {{--END ABOUT LINK--}}
 
-                {{--CART LINK--}}
-                <div class="nav-item mx-3 my-auto">
-                    <a href="{{ auth()->check() ? '' : route('login') }}"
-                       class="nav-link fs-7 {{ Route::is('cart') ? 'text-bistre' : 'text-seal-brown-50' }}">
-                        <img class="m-auto cart-logo" src="{{ asset('placeholders/bag.png') }}" alt="cart-logo">
-                    </a>
-                </div>
-                {{--END CART LINK--}}
+                @if(!auth()->check() || auth()->check() && !auth()->user()->is_admin)
+                    {{--CART LINK--}}
+                    <div class="nav-item mx-3 my-auto">
+                        <a href="{{ auth()->check() ? '' : route('login') }}"
+                           class="nav-link fs-7 {{ Route::is('cart') ? 'text-bistre' : 'text-seal-brown-50' }}">
+                            <img class="m-auto cart-logo" src="{{ asset('placeholders/bag.png') }}" alt="cart-logo">
+                        </a>
+                    </div>
+                    {{--END CART LINK--}}
+                @elseif(auth()->check() && auth()->user()->is_admin)
+                    {{--CART LINK--}}
+                    <div class="nav-item mx-3 my-auto" style="display: none;">
+                        <a href="{{ auth()->check() ? '' : route('login') }}"
+                           class="nav-link fs-7 {{ Route::is('cart') ? 'text-bistre' : 'text-seal-brown-50' }}">
+                            <img class="m-auto cart-logo" src="{{ asset('placeholders/bag.png') }}" alt="cart-logo">
+                        </a>
+                    </div>
+                    {{--END CART LINK--}}
+                @endif
 
+                @guest()
+                    {{--NO-AUTH DROPDOWN LINKS--}}
+{{--                    <div class="nav-item mx-3 my-auto">--}}
+{{--                        <a href="{{ route('login') }}" class="nav-link fs-7 text-seal-brown-50">--}}
+{{--                            Login--}}
+{{--                        </a>--}}
+{{--                    </div>--}}
 
-                {{--                    @guest--}}
-                {{--                        --}}{{--NO-AUTH DROPDOWN ITEMS--}}
-                {{--                        @if (Route::has('login'))--}}
-                {{--                            <div class="nav-item mx-3 my-auto">--}}
-                {{--                                <a class="nav-link fs-7 text-seal-brown-50" href="{{ route('login') }}">--}}
-                {{--                                    {{ __('Login') }}--}}
-                {{--                                </a>--}}
-                {{--                            </div>--}}
-                {{--                        @endif--}}
+{{--                    <div class="nav-item mx-3 my-auto">--}}
+{{--                        <a href="{{ route('register') }}" class="nav-link fs-7 text-seal-brown-50">--}}
+{{--                            Register--}}
+{{--                        </a>--}}
+{{--                    </div>--}}
+                    {{--NO-AUTH DROPDOWN LINKS--}}
+                @else
+                    {{--AUTH LINKS--}}
+                    <div class="nav-item dropdown mx-3 my-auto">
+                        <a id="navbarDropdown" class="nav-link fs-7 dropdown-toggle text-seal-brown-50" href="#"
+                           role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ auth()->user()->name }}
+                            <img class="ps-2" src="{{ Avatar::create(auth()->user()->name)->toBase64() }}" alt="..."
+                                 style="height: 2rem; width: auto;">
+                        </a>
 
-                {{--                        @if (Route::has('register'))--}}
-                {{--                            <div class="nav-item mx-3 my-auto">--}}
-                {{--                                <a class="nav-link fs-7 text-seal-brown-50"--}}
-                {{--                                   href="{{ route('register') }}">--}}
-                {{--                                    {{ __('Register') }}--}}
-                {{--                                </a>--}}
-                {{--                            </div>--}}
-                {{--                        @endif--}}
-                {{--                        --}}{{--END NO-AUTH DROPDOWN ITEMS--}}
-                {{--                    @else--}}
-                {{--                        --}}{{--AUTH DROPDOWN ITEMS--}}
-                {{--                        <div class="nav-item dropdown mx-3 my-auto">--}}
-                {{--                            <a id="navbarDropdown" class="nav-link fs-7 dropdown-toggle text-seal-brown-50" href="#"--}}
-                {{--                               role="button"--}}
-                {{--                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                {{--                                {{ Auth::user()->name }}--}}
-                {{--                                <i class="fas fa-chevron-down ps-2"></i>--}}
-                {{--                            </a>--}}
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
 
-                {{--                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">--}}
-                {{--                                <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('logout') }}"--}}
-                {{--                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">--}}
-                {{--                                    {{ __('Logout') }}--}}
-                {{--                                </a>--}}
-
-                {{--                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">--}}
-                {{--                                    @csrf--}}
-                {{--                                </form>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                        --}}{{--END AUTH DROPDOWN ITEMS--}}
-                {{--                    @endguest--}}
-
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+                    {{--END AUTH LINKS--}}
+                @endguest
             </div>
         </div>
         {{--END NAVBAR ITEMS RIGHT--}}
