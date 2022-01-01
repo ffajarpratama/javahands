@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid py-5">
 
-        @include('admin.product.partials.flash-message')
+        @include('admin.layouts.partials.flash-message')
 
         <div class="row mb-4">
             <div class="col-md-1"></div>

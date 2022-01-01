@@ -481,17 +481,17 @@
             </div>
         @endforeach
     </div>
-    @include('user.product.partials.modals.create')
-    @include('user.product.partials.modals.edit')
-    @include('user.product.partials.modals.delete')
-    @include('admin.product.partials.modals.create')
-    @include('admin.product.partials.modals.edit')
-    @include('admin.product.partials.modals.delete')
+    @include('user.product.modals.create')
+    @include('user.product.modals.edit')
+    @include('user.product.modals.delete')
+    @include('admin.reply.modals.create')
+    @include('admin.reply.modals.edit')
+    @include('admin.product.modals.delete')
 @endsection
 @section('footer')
     @include('layouts.partials.footer')
 @endsection
 @section('script')
-    @include('user.product.partials.modals.script')
-    @include('admin.product.partials.modals.scripts.store-and-update')
+    @include('user.product.modals.script')
+    @include('admin.reply.modals.script')
 @endsection

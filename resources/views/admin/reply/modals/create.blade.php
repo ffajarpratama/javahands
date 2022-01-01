@@ -1,14 +1,15 @@
-<div class="modal fade" id="updateReplyModal" data-bs-backdrop="static"
+{{--ADD REPLY MODAL--}}
+<div class="modal fade" id="addReplyModal" data-bs-backdrop="static"
      data-bs-keyboard="false"
-     tabindex="-1" aria-labelledby="updateReplyModalLabel" aria-hidden="true">
+     tabindex="-1" aria-labelledby="addReplyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="updateReplyForm" action="" method="POST">
+            <form id="replyForm" action="" method="POST">
                 @csrf
-                @method('PUT')
+                @method('POST')
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="description" class="mb-3 fw-700 text-jh-dark">Edit reply to this comment</label>
+                        <label for="description" class="mb-3 fw-700 text-jh-dark">Add reply to this comment</label>
                         <textarea name="description" id="description" class="form-control"
                                   style="resize: none" cols="30" rows="5"></textarea>
                     </div>
@@ -26,3 +27,4 @@
         </div>
     </div>
 </div>
+{{--END EDIT REPLY MODAL--}}
