@@ -161,8 +161,20 @@
         font-size: 14px;
     }
 
-    .cart-logo:hover {
+    .cart-logo {
         opacity: 50%;
+    }
+
+    .cart-logo:hover {
+        opacity: 100%;
+    }
+
+    .cart-logo-btn-50 {
+        opacity: 50%;
+    }
+
+    .cart-logo-btn-100 {
+        opacity: 100%;
     }
 
     .nav-tabs {
@@ -319,10 +331,10 @@
 
     .rating input:checked ~ label,
 
-    /* show gold star when clicked */
+        /* show gold star when clicked */
     .rating:not(:checked) label:hover,
 
-    /* hover current star */
+        /* hover current star */
     .rating:not(:checked) label:hover ~ label {
         color: #FFB700;
     }
@@ -330,11 +342,11 @@
     /* hover previous stars in list */
     .rating input:checked + label:hover,
 
-    /* hover current star when changing rating */
+        /* hover current star when changing rating */
     .rating input:checked ~ label:hover,
     .rating label:hover ~ input:checked ~ label,
 
-    /* lighten current selection */
+        /* lighten current selection */
     .rating input:checked ~ label:hover ~ label {
         color: #FFED85;
     }
@@ -356,6 +368,24 @@
     .btn-icon-split .text {
         display: inline-block;
         padding: 0.375rem 0.75rem;
+    }
+
+    .cart-cards {
+        min-height: 715px;
+        background: #FEFEFE;
+        border: 1px solid #EFEFEF;
+        box-sizing: border-box;
+        box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.05);
+        border-radius: 15px;
+    }
+
+    .cart-product-img {
+        width: 45px;
+        height: 45px;
+        border: 1px solid #C4C4C4;
+        box-sizing: border-box;
+        box-shadow: 4px 4px 15px rgba(226, 226, 226, 0.10);
+        border-radius: 3px;
     }
 
 </style>

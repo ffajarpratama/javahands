@@ -31,7 +31,7 @@
                 <h3 class="fw-bold mb-0" style="color: #2E190D;">Featured</h3>
             </div>
             <div class="col-md-6 text-end" style="color: #2E190D;">
-                <a href="{{ route('products.index') }}"
+                <a href="{{ route('product.index') }}"
                    style="text-decoration: none; color: black; font-weight: 500">
                     See All
                 </a>
@@ -41,7 +41,7 @@
         <div class="row g-0 justify-content-between mb-5">
             @foreach($products as $product)
                 <div class="col-md-auto">
-                    <a href="{{ route('products.show', $product->id) }}" style="text-decoration: none;">
+                    <a href="{{ route('product.show', $product->id) }}" style="text-decoration: none;">
                         <div class="card"
                              style="height: 314px; width: 240px; border: 1px solid #e0e0e0; border-radius: 5px; box-shadow: 0 0 19px -8px rgba(0, 0, 0, 0.29);">
                             @if(!$product->picture)

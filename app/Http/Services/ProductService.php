@@ -72,24 +72,23 @@ class ProductService
     {
         $sortBy = $request->query('sortBy');
         $category = $request->query('category');
+        $products = Product::query()->latest()->paginate(15);
 
-        if (!$category || !$sortBy) {
-            return Product::query()->latest()->paginate(15);
+        if ($category) {
+            if (is_null($sortBy) || $sortBy == 'newest') {
+                $products =  $this->sortProductByDate($category);
+            }
+
+            if ($sortBy == 'price') {
+                $products =  $this->sortProductByPrice($category);
+            }
+
+            if ($sortBy == 'rating') {
+                $products =  $this->sortProductByRating($category);
+            }
         }
 
-        if ($sortBy == 'newest') {
-            return $this->sortProductByDate($category);
-        }
-
-        if ($sortBy == 'price') {
-            return $this->sortProductByPrice($category);
-        }
-
-        if ($sortBy == 'rating') {
-            return $this->sortProductByRating($category);
-        }
-
-        return Product::query()->latest()->paginate(15);
+        return $products;
     }
 
     public function storeProduct($request)

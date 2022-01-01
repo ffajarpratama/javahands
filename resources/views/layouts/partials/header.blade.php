@@ -26,7 +26,7 @@
                 {{--PRODUCT DROPDOWN--}}
                 <div class="nav-item dropdown mx-3 my-auto">
                     <a id="navbarDropdown"
-                       class="nav-link fs-7 dropdown-toggle {{ Route::is('products.index') || Route::is('products.home') ? 'text-bistre' : 'text-seal-brown-50' }}"
+                       class="nav-link fs-7 dropdown-toggle {{ Route::is('product.index') || Route::is('product.home') ? 'text-bistre' : 'text-seal-brown-50' }}"
                        href="" role="button"
                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Product
@@ -34,19 +34,19 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item fs-7 text-seal-brown-50" href="#" role="button">
+                        <a class="dropdown-item fs-7 text-seal-brown-50" href="{{ route('product.home') }}" role="button">
                             Featured Products
                         </a>
 
                         <hr class="dropdown-divider">
 
                         <a class="dropdown-item fs-7 text-seal-brown-50"
-                           href="{{ route('products.index', ['category' => 'all_products']) }}">
+                           href="{{ route('product.index', ['category' => 'all_products']) }}">
                             All Products
                         </a>
                         @foreach($categories as $category)
                             <a class="dropdown-item fs-7 text-seal-brown-50"
-                               href="{{ route('products.index', ['category' => $category->name]) }}">
+                               href="{{ route('product.index', ['category' => $category->name]) }}">
                                 {{ $category->name }}
                             </a>
                         @endforeach
@@ -66,18 +66,24 @@
                 @if(!auth()->check() || auth()->check() && !auth()->user()->is_admin)
                     {{--CART LINK--}}
                     <div class="nav-item mx-3 my-auto">
-                        <a href="{{ auth()->check() ? '' : route('login') }}"
-                           class="nav-link fs-7 {{ Route::is('cart') ? 'text-bistre' : 'text-seal-brown-50' }}">
-                            <img class="m-auto cart-logo" src="{{ asset('placeholders/bag.png') }}" alt="cart-logo">
+                        <a href="{{ auth()->check() ? route('user.cart.index') : route('login') }}" class="nav-link fs-7">
+                            @if(Route::is('user.cart.index'))
+                                <img class="m-auto" src="{{ asset('placeholders/cart-fill.png') }}" alt="cart-logo" style="width: 46px; height: 46px;">
+                            @else
+                                <img class="m-auto cart-logo" src="{{ asset('placeholders/cart.png') }}" alt="cart-logo">
+                            @endif
                         </a>
                     </div>
                     {{--END CART LINK--}}
                 @elseif(auth()->check() && auth()->user()->is_admin)
                     {{--CART LINK--}}
                     <div class="nav-item mx-3 my-auto" style="display: none;">
-                        <a href="{{ auth()->check() ? '' : route('login') }}"
-                           class="nav-link fs-7 {{ Route::is('cart') ? 'text-bistre' : 'text-seal-brown-50' }}">
-                            <img class="m-auto cart-logo" src="{{ asset('placeholders/bag.png') }}" alt="cart-logo">
+                        <a href="{{ auth()->check() ? route('user.cart.index') : route('login') }}" class="nav-link fs-7">
+                            @if(Route::is('user.cart.index'))
+                                <img class="m-auto" src="{{ asset('placeholders/cart-fill.png') }}" alt="cart-logo" style="width: 46px; height: 46px;">
+                            @else
+                                <img class="m-auto cart-logo" src="{{ asset('placeholders/cart.png') }}" alt="cart-logo">
+                            @endif
                         </a>
                     </div>
                     {{--END CART LINK--}}
@@ -103,7 +109,7 @@
                         <a id="navbarDropdown" class="nav-link fs-7 dropdown-toggle text-seal-brown-50" href="#"
                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ auth()->user()->name }}
-                            <img class="ps-2" src="{{ Avatar::create(auth()->user()->name)->toBase64() }}" alt="..."
+                            <img class="ps-2" src="{{ asset('placeholders/profile.png') }}" alt="..."
                                  style="height: 2rem; width: auto;">
                         </a>
 

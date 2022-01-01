@@ -12,7 +12,7 @@
             </div>
             <div class="d-flex flex-row justify-content-end p-3">
                 <button class="btn btn-outline-secondary me-3" type="button" data-bs-dismiss="modal">Cancel</button>
-                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
+                <form action="{{ route('admin.product.destroy', $product->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">Delete</button>

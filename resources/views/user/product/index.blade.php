@@ -11,20 +11,27 @@
                     </div>
 
                     <div class="row g-0 mb-4">
-                        <form action="{{ route('products.search') }}" class="d-flex p-0" method="GET">
+                        <form action="{{ route('product.search') }}" class="d-flex p-0" method="GET">
                             <input class="form-control me-2" name="search_value" id="search_value" type="text" placeholder="Search" aria-label="Search" value="{{ old('search_value') }}">
                             <button type="submit" class="btn btn-outline-secondary">
-                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <i class="fas fa-search"></i>
                             </button>
                         </form>
                     </div>
 
-                    <div class="row g-0 mb-3">
-                        <h1 class="fw-bold text-start p-0" style="font-size: 30px">Product Categories</h1>
+
+                    <div class="d-flex flex-row justify-content-between align-items-center g-0 mb-3">
+                        <p class="mb-0 fw-bold text-start p-0" style="font-size: 30px">Product Categories</p>
+                        @if(auth()->check() && auth()->user()->is_admin)
+                            <a href="{{ route('admin.categories.index') }}" class="btn btn-jh-primary">
+                                <img src="{{ asset('placeholders/edit-white.png') }}" alt="..." class="mb-1">
+                            </a>
+                        @endif
                     </div>
 
+
                     <div class="row g-0 my-2 fs-7">
-                        <a href="{{ route('products.index', ['category' => 'all_products']) }}"
+                        <a href="{{ route('product.index', ['category' => 'all_products']) }}"
                            class="list-group-item {{ ucwords(str_replace('_', ' ', request()->query('category'))) == 'All Products' ? 'active' : '' }} p-0"
                            aria-current="true">
                             <div class="d-flex flex-row justify-content-between">
@@ -36,7 +43,7 @@
 
                     @foreach($categories as $category)
                         <div class="row g-0 my-2 fs-7">
-                            <a href="{{ route('products.index' , ['category' => $category->name]) }}"
+                            <a href="{{ route('product.index' , ['category' => $category->name]) }}"
                                class="list-group-item {{ request()->query('category') == $category->name ? 'active' : '' }} p-0">
                                 <div class="d-flex flex-row justify-content-between">
                                     <div class="col-md-auto text-start">{{ $category->name }}</div>
@@ -67,7 +74,7 @@
 
                 <div class="d-flex flex-row justify-content-between align-items-center my-4" style="font-size: 14px; color: #A7A7A7;">
                     <div class="col-md-auto text-start">
-                        @if(Route::is('products.search'))
+                        @if(Route::is('product.search'))
                             @if($products->isNotEmpty())
                                 Showing {{ $products->firstItem() }} - {{ $products->lastItem() }} of {{ $products->total() }} from search result
                             @endif
@@ -84,7 +91,7 @@
 
                     @if(auth()->check() && auth()->user()->is_admin)
                         <div class="col-md-auto ms-auto me-3">
-                            <a href="{{ route('admin.products.create') }}" class="btn btn-jh-primary btn-icon-split">
+                            <a href="{{ route('admin.product.create') }}" class="btn btn-jh-primary btn-icon-split">
                                 <div class="icon text-white">
                                     <i class="fas fa-plus"></i>
                                 </div>
@@ -128,7 +135,7 @@
                 <div class="d-flex flex-row flex-wrap justify-content-start">
                     @forelse($products as $product)
                         <div class="col-md-4 mb-5 px-2">
-                            <a href="{{ route('products.show', $product->id) }}" style="text-decoration: none; color: black;">
+                            <a href="{{ route('product.show', $product->id) }}" style="text-decoration: none; color: black;">
 
                                 <div class="card p-4" style="border: 1px solid #e0e0e0; box-shadow: 0 0 19px -8px rgba(0, 0, 0, 0.29); border-radius: 15px; height: 200px;">
                                     @if(!$product->picture)

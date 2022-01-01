@@ -27,7 +27,7 @@ class CommentController extends Controller
             'picture' => $imageName
         ]);
 
-        return redirect()->route('products.show', $product->id)->with('success', 'Comment added!');
+        return redirect()->route('product.show', $product->id)->with('success', 'Comment added!');
     }
 
     public function update(Request $request, Comment $comment)

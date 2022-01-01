@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container p-5 mb-5">
-        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -180,7 +180,7 @@
                     </div>
 
                     <div class="d-flex flex-row justify-content-end my-5">
-                        <a href="{{ route('products.show', $product->id) }}"
+                        <a href="{{ route('product.show', $product->id) }}"
                            class="btn btn-outline-secondary me-3">
                             Back
                         </a>

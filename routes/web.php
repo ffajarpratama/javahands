@@ -28,7 +28,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
     Route::get('/dashboard', [AdminController::class, 'dashboard'])
         ->name('dashboard');
 
-    Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class)
+    Route::resource('/product', \App\Http\Controllers\Admin\ProductController::class)
         ->except(['index', 'show']);
 
     Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class)
@@ -43,26 +43,26 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->grou
 });
 
 //PRODUCT ROUTES
-Route::get('/products/home', [ProductController::class, 'home'])
-    ->name('products.home');
+Route::get('/product/home', [ProductController::class, 'home'])
+    ->name('product.home');
 
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
-Route::get('/products/search', [ProductController::class, 'search'])
-    ->name('products.search');
-Route::get('/products/{product}', [ProductController::class, 'show'])
-    ->name('products.show');
+Route::get('/product', [ProductController::class, 'index'])
+    ->name('product.index');
+Route::get('/product/search', [ProductController::class, 'search'])
+    ->name('product.search');
+Route::get('/product/{product}', [ProductController::class, 'show'])
+    ->name('product.show');
 //END PRODUCT ROUTES
 
 //USER ROUTES
 Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     //COMMENT ROUTES
-    Route::post('/comments/{product}/{user}', [\App\Http\Controllers\CommentController::class, 'store'])
-        ->name('comments.store');
-    Route::put('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])
-        ->name('comments.update');
-    Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])
-        ->name('comments.delete');
+    Route::post('/comment/{product}/{user}', [\App\Http\Controllers\CommentController::class, 'store'])
+        ->name('comment.store');
+    Route::put('/comment/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])
+        ->name('comment.update');
+    Route::delete('/comment/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])
+        ->name('comment.delete');
     //END COMMENT ROUTES
 
     //LIKE ROUTES
@@ -73,6 +73,11 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::post('/dislikes/{comment_id}', [\App\Http\Controllers\DislikeController::class, 'dislike'])
         ->name('dislikes.add');
     //END DISLIKE ROUTES
+
+    //CART ROUTES
+    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])
+        ->name('cart.index');
+    //END CART ROUTES
 });
 //END USER ROUTES
 

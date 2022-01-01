@@ -16,7 +16,7 @@
     <hr class="sidebar-divider">
 
 {{--    <div class="nav-item">--}}
-{{--        <a class="nav-link" href="{{ route('admin.products.index', ['category' => 'all_products']) }}">--}}
+{{--        <a class="nav-link" href="{{ route('admin.product.index', ['category' => 'all_products']) }}">--}}
 {{--            <i class="fas fa-fw fa-chart-area"></i>--}}
 {{--            <span>Products</span></a>--}}
 {{--    </div>--}}

@@ -24,7 +24,7 @@
 
         @if(auth()->check() && auth()->user()->is_admin)
             <div class="d-flex flex-row justify-content-end mx-5 px-5 mb-5">
-                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-jh-primary me-2">
+                <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-jh-primary me-2">
                     Edit this product
                 </a>
 
@@ -265,7 +265,7 @@
                             id="commentButton"
                             data-bs-toggle="modal"
                             data-bs-target="#addCommentModal"
-                            data-bs-url="{{ route('user.comments.store', [$product->id, auth()->id()]) }}">
+                            data-bs-url="{{ route('user.comment.store', [$product->id, auth()->id()]) }}">
                         Add Comment
                         <i class="fas fa-comment ms-1"></i>
                     </button>
@@ -295,18 +295,18 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li>
                         <a class="dropdown-item"
-                           href="{{ route('products.show', $product->id) . '?sortCommentBy=newest' }}">
+                           href="{{ route('product.show', $product->id) . '?sortCommentBy=newest' }}">
                             Newest
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item"
-                           href="{{ route('products.show', $product->id) . '?sortCommentBy=popular' }}">
+                           href="{{ route('product.show', $product->id) . '?sortCommentBy=popular' }}">
                             Popular
                         </a>
                     </li>
                     <li><a class="dropdown-item"
-                           href="{{ route('products.show', $product->id) . '?sortCommentBy=rating' }}">
+                           href="{{ route('product.show', $product->id) . '?sortCommentBy=rating' }}">
                             Rating
                         </a>
                     </li>
@@ -350,13 +350,13 @@
                                                 data-bs-title="{{ $comment->title }}"
                                                 data-bs-description="{{ $comment->description }}"
                                                 data-bs-picture="{{ $comment->picture }}"
-                                                data-bs-url="{{ route('user.comments.update', $comment->id) }}">
+                                                data-bs-url="{{ route('user.comment.update', $comment->id) }}">
                                             Edit
                                         </button>
                                         <button class="dropdown-item fw-200 fs-7" id="deleteButton"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#deleteCommentModal"
-                                                data-bs-url="{{ route('user.comments.delete', $comment->id) }}">
+                                                data-bs-url="{{ route('user.comment.delete', $comment->id) }}">
                                             Delete
                                         </button>
                                     </div>
