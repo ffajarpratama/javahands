@@ -7,20 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use WisdomDiala\Countrypkg\Models\Country;
+use WisdomDiala\Countrypkg\Models\State;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'address',
-        'phone',
-        'picture'
-    ];
+    protected $guarded = [];
     protected $hidden = [
         'remember_token',
     ];
@@ -48,5 +43,35 @@ class User extends Authenticatable
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
+
+    public function getCountryName()
+    {
+        if ($this->state) {
+            return Country::query()
+                ->where('id', $this->state->country_id)
+                ->value('name');
+        }
+        return null;
+    }
+
+    public function getCountryId()
+    {
+        if ($this->state) {
+            return Country::query()
+                ->where('id', $this->state->country_id)
+                ->value('id');
+        }
+        return null;
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

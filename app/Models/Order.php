@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class Order extends Model
 {
     use HasFactory;
 
-    protected $table = 'carts';
+    protected $table = 'orders';
     protected $guarded = [];
 
     public function user()
@@ -17,13 +17,8 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product()
+    public function carts()
     {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function order()
-    {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Cart::class);
     }
 }

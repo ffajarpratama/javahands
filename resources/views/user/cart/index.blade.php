@@ -30,9 +30,9 @@
                             <p class="mb-0 fs-24-px fw-700 text-bistre">
                                 {{ $user->getFullNameAttribute() }}
                             </p>
-                            <a href="#" class="btn btn-jh-secondary">
+                            <button type="button" class="btn btn-jh-secondary">
                                 Setting
-                            </a>
+                            </button>
                         </div>
                         <div class="row g-0 mb-3">
                             <div class="col-md-6">
@@ -43,7 +43,11 @@
                                     {{ $user->email }}
                                 </p>
                                 <p class="text-secondary fw-400">
-                                    {{ $user->address }}
+                                    @if($user->state)
+                                        {{ $user->address }}, {{ $user->state->name }}, {{ $user->getCountryName() }}
+                                    @else
+                                        {{ $user->address }}
+                                    @endif
                                 </p>
                             </div>
                         </div>
@@ -99,7 +103,8 @@
                                                      alt="...">
                                             @else
                                                 <img class="cart-product-img"
-                                                     src="{{ asset('storage/products/' . $cart->product->picture) }}" alt="...">
+                                                     src="{{ asset('storage/products/' . $cart->product->picture) }}"
+                                                     alt="...">
                                             @endif
 
                                             <p class="mb-0 fs-7 text-bistre fw-400 ms-3">
@@ -199,21 +204,17 @@
                                     </div>
 
                                     <div class="d-grid gap-2 mt-5">
-                                        <a href="" class="btn btn-jh-secondary fs-20-px fw-700">
+                                        <a href="{{ route('user.order.create') }}" class="btn btn-jh-secondary fs-20-px fw-700">
                                             Checkout
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         @endif
-
-
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 @endsection
 @section('footer')

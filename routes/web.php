@@ -32,6 +32,8 @@ Route::get('register/address', [\App\Http\Controllers\AuthController::class, 'ge
     ->name('register.address');
 Route::post('register/address', [\App\Http\Controllers\AuthController::class, 'storeUserToDatabase'])
     ->name('register.second.step');
+Route::post('profile', [\App\Http\Controllers\AuthController::class, 'updateProfile'])
+    ->name('profile.update');
 //END REGISTER ROUTES
 
 //LOGIN ROUTE
@@ -97,6 +99,15 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::post('/cart/{product}/{user}', [\App\Http\Controllers\CartController::class, 'store'])
         ->name('cart.store');
     //END CART ROUTES
+
+    //ORDER ROUTES
+    Route::get('/order', [\App\Http\Controllers\OrderController::class, 'create'])
+        ->name('order.create');
+    Route::post('/order', [\App\Http\Controllers\OrderController::class, 'store'])
+        ->name('order.store');
+    Route::get('/order/details', [\App\Http\Controllers\OrderController::class, 'details'])
+        ->name('order.details');
+    //END ORDER ROUTES
 });
 //END USER ROUTES
 

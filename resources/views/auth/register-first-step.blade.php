@@ -40,7 +40,6 @@
                             </div>
                             @enderror
                         </div>
-
                     </div>
 
                     <div class="row g-0 mb-1">

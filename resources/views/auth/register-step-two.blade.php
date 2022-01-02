@@ -16,8 +16,9 @@
                             Country <sup class="text-danger">*</sup>
                         </label>
 
-                        <select class="form-control countryDropdown fs-7 text-secondary @error('country') is-invalid @enderror"
-                                name="country" id="country">
+                        <select
+                            class="form-control countryDropdown fs-7 text-secondary @error('country') is-invalid @enderror"
+                            name="country" id="country">
                             <option value="">Select Country</option>
                             @foreach($countries as $country)
                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -36,7 +37,8 @@
                             State/Province <sup class="text-danger">*</sup>
                         </label>
 
-                        <select class="form-control fs-7 text-secondary @error('state') is-invalid @enderror" name="state" id="state">
+                        <select class="form-control fs-7 text-secondary @error('state') is-invalid @enderror"
+                                name="state" id="state">
                             <option value="">Select State/Province</option>
                         </select>
 
@@ -54,7 +56,8 @@
                             </label>
 
                             <input id="city" type="text"
-                                   class="form-control fs-7 text-secondary @error('city') is-invalid @enderror" name="city"
+                                   class="form-control fs-7 text-secondary @error('city') is-invalid @enderror"
+                                   name="city"
                                    value="{{ old('city') }}" required autocomplete="city">
 
                             @error('city')
@@ -69,7 +72,8 @@
                                 Zip Code <sup class="text-danger">*</sup>
                             </label>
                             <input id="zip_code" type="text"
-                                   class="form-control fs-7 text-secondary @error('zip_code') is-invalid @enderror" name="zip_code"
+                                   class="form-control fs-7 text-secondary @error('zip_code') is-invalid @enderror"
+                                   name="zip_code"
                                    value="{{ old('zip_code') }}" required autocomplete="zip_code">
 
                             @error('zip_code')
@@ -107,12 +111,13 @@
                         </label>
                     </div>
                     <div class="row g-0 mb-4">
-                        <input class="form-control fs-7 text-secondary  @error('phone_number') is-invalid @enderror" id="phone_number"
+                        <input class="form-control fs-7 text-secondary  @error('phone_number') is-invalid @enderror"
+                               id="phone_number"
                                type="tel" name="phone_number">
 
-{{--                        <input id="phone_number" type="text"--}}
-{{--                               class="form-control @error('phone_number') is-invalid @enderror"--}}
-{{--                               name="phone_number" required value="{{ old('phone_number') }}">--}}
+                        {{--                        <input id="phone_number" type="text"--}}
+                        {{--                               class="form-control @error('phone_number') is-invalid @enderror"--}}
+                        {{--                               name="phone_number" required value="{{ old('phone_number') }}">--}}
 
                         @error('phone_number')
                         <div class="invalid-feedback" role="alert">
@@ -154,7 +159,9 @@
                         $.each(response.data, (id, name) => {
                             state.append(new Option(name, id));
                         });
-                    });
+                    }).catch((error) => {
+                    state.empty();
+                });
             });
 
             const phone_field = document.querySelector('#phone_number');

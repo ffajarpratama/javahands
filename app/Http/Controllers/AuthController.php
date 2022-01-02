@@ -82,4 +82,33 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'email' => ['required'],
+            'state' => ['required'],
+            'city' => ['required'],
+            'zip_code' => ['required'],
+            'address' => ['required'],
+            'phone_number' => ['required']
+        ]);
+        $user = User::query()
+            ->where('id', auth()->id())
+            ->first();
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'state_id' => $request->state,
+            'address' => $request->address,
+            'city' => $request->city,
+            'zip_code' => $request->zip_code,
+            'phone_number' => $request->phone_number,
+        ]);
+
+        return redirect()->back()->with('success', 'Contact and shipping details updated!');
+    }
+
 }
