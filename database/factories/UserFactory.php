@@ -18,13 +18,14 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $first_name = $this->faker->firstName;
+        $last_name = $this->faker->lastName;
+        $email = strtolower($first_name) . '@mail.com';
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
             'password' => Hash::make('password'),
-            'address' => $this->faker->address,
-            'phone' => $this->faker->phoneNumber,
-            'picture' => $this->faker->imageUrl(200, 200),
             'is_admin' => false,
             'created_at' => date(Carbon::now()),
             'updated_at' => date(Carbon::now()),

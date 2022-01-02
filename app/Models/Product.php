@@ -12,6 +12,14 @@ class Product extends Model
     protected $table = 'products';
     protected $guarded = [];
 
+    public function getDiscountedPrice()
+    {
+        if ($this->discount != 0) {
+            $price = $this->price;
+            return $price - ($price * ($this->discount / 100));
+        }
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
@@ -25,5 +33,10 @@ class Product extends Model
     public function description()
     {
         return $this->hasOne(Description::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
     }
 }

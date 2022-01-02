@@ -22,9 +22,13 @@ class User extends Authenticatable
         'picture'
     ];
     protected $hidden = [
-        'password',
         'remember_token',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 
     public function comments()
     {
@@ -41,11 +45,8 @@ class User extends Authenticatable
         return $this->hasMany(Dislike::class);
     }
 
-//    public function products()
-//    {
-//        return $this->belongsToMany(Product::class, 'comments', 'user_id', 'product_id')
-//            ->as('comment')
-//            ->withPivot(['description', 'rating', 'picture'])
-//            ->withTimestamps();
-//    }
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

@@ -34,7 +34,8 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item fs-7 text-seal-brown-50" href="{{ route('product.home') }}" role="button">
+                        <a class="dropdown-item fs-7 text-seal-brown-50" href="{{ route('product.home') }}"
+                           role="button">
                             Featured Products
                         </a>
 
@@ -65,12 +66,14 @@
 
                 @if(!auth()->check() || auth()->check() && !auth()->user()->is_admin)
                     {{--CART LINK--}}
-                    <div class="nav-item mx-3 my-auto">
+                    <div class="nav-item mx-3 my-auto position-relative">
                         <a href="{{ auth()->check() ? route('user.cart.index') : route('login') }}" class="nav-link fs-7">
                             @if(Route::is('user.cart.index'))
-                                <img class="m-auto" src="{{ asset('placeholders/cart-fill.png') }}" alt="cart-logo" style="width: 46px; height: 46px;">
+                                <img class="m-auto" src="{{ asset('placeholders/cart-fill.png') }}" alt="cart-logo"
+                                     style="width: 46px; height: 46px;">
                             @else
-                                <img class="m-auto cart-logo" src="{{ asset('placeholders/cart.png') }}" alt="cart-logo">
+                                <img class="m-auto cart-logo" src="{{ asset('placeholders/cart.png') }}"
+                                     alt="cart-logo">
                             @endif
                         </a>
                     </div>
@@ -78,11 +81,14 @@
                 @elseif(auth()->check() && auth()->user()->is_admin)
                     {{--CART LINK--}}
                     <div class="nav-item mx-3 my-auto" style="display: none;">
-                        <a href="{{ auth()->check() ? route('user.cart.index') : route('login') }}" class="nav-link fs-7">
+                        <a href="{{ auth()->check() ? route('user.cart.index') : route('login') }}"
+                           class="nav-link fs-7">
                             @if(Route::is('user.cart.index'))
-                                <img class="m-auto" src="{{ asset('placeholders/cart-fill.png') }}" alt="cart-logo" style="width: 46px; height: 46px;">
+                                <img class="m-auto" src="{{ asset('placeholders/cart-fill.png') }}" alt="cart-logo"
+                                     style="width: 46px; height: 46px;">
                             @else
-                                <img class="m-auto cart-logo" src="{{ asset('placeholders/cart.png') }}" alt="cart-logo">
+                                <img class="m-auto cart-logo" src="{{ asset('placeholders/cart.png') }}"
+                                     alt="cart-logo">
                             @endif
                         </a>
                     </div>
@@ -91,24 +97,24 @@
 
                 @guest()
                     {{--NO-AUTH DROPDOWN LINKS--}}
-{{--                    <div class="nav-item mx-3 my-auto">--}}
-{{--                        <a href="{{ route('login') }}" class="nav-link fs-7 text-seal-brown-50">--}}
-{{--                            Login--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="nav-item mx-3 my-auto">--}}
+                    {{--                        <a href="{{ route('login') }}" class="nav-link fs-7 text-seal-brown-50">--}}
+                    {{--                            Login--}}
+                    {{--                        </a>--}}
+                    {{--                    </div>--}}
 
-{{--                    <div class="nav-item mx-3 my-auto">--}}
-{{--                        <a href="{{ route('register') }}" class="nav-link fs-7 text-seal-brown-50">--}}
-{{--                            Register--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="nav-item mx-3 my-auto">--}}
+                    {{--                        <a href="{{ route('register') }}" class="nav-link fs-7 text-seal-brown-50">--}}
+                    {{--                            Register--}}
+                    {{--                        </a>--}}
+                    {{--                    </div>--}}
                     {{--NO-AUTH DROPDOWN LINKS--}}
                 @else
                     {{--AUTH LINKS--}}
                     <div class="nav-item dropdown mx-3 my-auto">
                         <a id="navbarDropdown" class="nav-link fs-7 dropdown-toggle text-seal-brown-50" href="#"
                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ auth()->user()->name }}
+                            {{ auth()->user()->first_name }}
                             <img class="ps-2" src="{{ asset('placeholders/profile.png') }}" alt="..."
                                  style="height: 2rem; width: auto;">
                         </a>

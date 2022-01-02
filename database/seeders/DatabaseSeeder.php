@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             ProductSeeder::class,
-            CategorySeeder::class
+            CategorySeeder::class,
+            CountryPackageSeeder::class
         ]);
 
         foreach (Product::all() as $product) {

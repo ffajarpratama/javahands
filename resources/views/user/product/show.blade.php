@@ -73,21 +73,25 @@
 
                         <div class="col-md-auto">
                             <p class="{{ $product->discount != 0 ? 'text-danger' : 'text-gray-900' }} mb-0 fw-600 fs-40-px">
-                                {{ '$' . number_format($product->price - ($product->price * ($product->discount / 100))) }}
+                                {{ '$' . number_format($product->getDiscountedPrice()) }}
                             </p>
                         </div>
                     </div>
                 </div>
 
                 @if(auth()->check() && !auth()->user()->is_admin)
-                    <div class="row g-0 my-5">
-                        <div class="d-grid gap-2">
-                            <button class="btn cart-button text-bistre py-3" type="button">
-                                <i class="fas fa-shopping-cart"></i>
-                                Add to Cart
-                            </button>
+                    <form action="{{ route('user.cart.store', [$product->id, auth()->id()]) }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="row g-0 my-5">
+                            <div class="d-grid gap-2">
+                                <button class="btn cart-button text-bistre py-3" type="submit">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Add to Cart
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 @else
                     <div class="my-5"></div>
                 @endif

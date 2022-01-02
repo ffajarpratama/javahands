@@ -8,24 +8,39 @@
                     <img src="{{ asset('placeholders/logos/jh-logo-text-color.png') }}" alt="logo-text-color">
                 </div>
 
-                <form action="{{ route('register') }}" method="POST">
+                <form action="{{ route('register.first.step') }}" method="POST">
                     @csrf
                     @method('POST')
-                    <div class="row g-0 mb-1">
-                        <label for="name" class="fs-7 fw-600">
-                            Name <sup class="text-danger">*</sup>
-                        </label>
-                    </div>
-                    <div class="row g-0 mb-4">
-                        <input id="name" type="text"
-                               class="fs-7 form-control @error('name') is-invalid @enderror" name="name"
-                               value="{{ old('name') }}" required autocomplete="name">
+                    <div class="row justify-content-between g-0 mb-4">
+                        <div class="col-md-6 pe-1">
+                            <label for="first_name" class="fs-7 fw-600">
+                                First Name <sup class="text-danger">*</sup>
+                            </label>
+                            <input id="first_name" type="text"
+                                   class="fs-7 text-secondary form-control @error('first_name') is-invalid @enderror" name="first_name"
+                                   value="{{ old('first_name') }}" required autocomplete="first_name">
 
-                        @error('name')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                            @error('first_name')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
                         </div>
-                        @enderror
+                        <div class="col-md-6 ps-1">
+                            <label for="last_name" class="fs-7 fw-600">
+                                Last Name <sup class="text-danger">*</sup>
+                            </label>
+                            <input id="last_name" type="text"
+                                   class="fs-7 text-secondary form-control @error('last_name') is-invalid @enderror" name="last_name"
+                                   value="{{ old('last_name') }}" required autocomplete="last_name">
+
+                            @error('last_name')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
+                        </div>
+
                     </div>
 
                     <div class="row g-0 mb-1">
@@ -35,7 +50,7 @@
                     </div>
                     <div class="row g-0 mb-4">
                         <input id="email" type="email"
-                               class="form-control @error('email') is-invalid @enderror" name="email"
+                               class="fs-7 text-secondary form-control @error('email') is-invalid @enderror" name="email"
                                value="{{ old('email') }}" required autocomplete="email">
 
                         @error('email')
@@ -81,7 +96,7 @@
 
                     <div class="d-grid gap-2 mb-4">
                         <button class="btn btn-jh-primary fs-7 fw-600" type="submit">
-                            Register
+                            Continue
                         </button>
                     </div>
 

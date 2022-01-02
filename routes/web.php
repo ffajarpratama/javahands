@@ -20,7 +20,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//AUTH ROUTES
+//REGISTER ROUTES
+Route::get('register', [\App\Http\Controllers\AuthController::class, 'getRegisterPage'])
+    ->name('register');
+Route::post('register', [\App\Http\Controllers\AuthController::class, 'storeUserDetails'])
+    ->name('register.first.step');
+Route::get('/getStates/{id}', [\App\Http\Controllers\AuthController::class, 'getStates'])
+    ->name('register.get.states');
+Route::get('register/address', [\App\Http\Controllers\AuthController::class, 'getStepTwoRegisterPage'])
+    ->name('register.address');
+Route::post('register/address', [\App\Http\Controllers\AuthController::class, 'storeUserToDatabase'])
+    ->name('register.second.step');
+//END REGISTER ROUTES
+
+//LOGIN ROUTE
+Auth::routes(['register' => false, 'reset' => false]);
+//END LOGIN ROUTE
+//END AUTH ROUTES
 
 //ADMIN ROUTES
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->group(function () {
@@ -77,6 +94,8 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     //CART ROUTES
     Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])
         ->name('cart.index');
+    Route::post('/cart/{product}/{user}', [\App\Http\Controllers\CartController::class, 'store'])
+        ->name('cart.store');
     //END CART ROUTES
 });
 //END USER ROUTES

@@ -18,14 +18,11 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $today = Carbon::now();
-        $faker = Factory::create();
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
+            'last_name' => null,
             'email' => 'admin@mail.com',
             'password' => Hash::make('password'),
-            'address' => $faker->address,
-            'phone' => $faker->phoneNumber,
-            'picture' => $faker->imageUrl(200, 200),
             'is_admin' => true,
             'created_at' => date($today),
             'updated_at' => date($today),
