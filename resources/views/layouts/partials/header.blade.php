@@ -17,7 +17,7 @@
             <div class="navbar-nav ms-auto">
                 {{--HOME LINK--}}
                 <div class="nav-item mx-3 my-auto">
-                    <a href="" class="nav-link fs-7 {{ Route::is('home') ? 'text-bistre' : 'text-seal-brown-50' }}">
+                    <a href="{{ route('landing') }}" class="nav-link fs-7 {{ Route::is('landing') ? 'text-bistre fw-600' : 'text-seal-brown-50' }}">
                         Home
                     </a>
                 </div>
@@ -26,7 +26,7 @@
                 {{--PRODUCT DROPDOWN--}}
                 <div class="nav-item dropdown mx-3 my-auto">
                     <a id="navbarDropdown"
-                       class="nav-link fs-7 dropdown-toggle {{ Route::is('product.index') || Route::is('product.home') ? 'text-bistre' : 'text-seal-brown-50' }}"
+                       class="nav-link fs-7 dropdown-toggle {{ Route::is('product.index') || Route::is('product.home') ? 'text-bistre fw-600' : 'text-seal-brown-50' }}"
                        href="" role="button"
                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Product
@@ -57,8 +57,8 @@
 
                 {{--ABOUT LINK--}}
                 <div class="nav-item mx-3 my-auto">
-                    <a href=""
-                       class="nav-link fs-7 {{ Route::is('about') ? 'text-bistre' : 'text-seal-brown-50' }}">
+                    <a href="{{ route('about') }}"
+                       class="nav-link fs-7 {{ Route::is('about') ? 'text-bistre fw-600' : 'text-seal-brown-50' }}">
                         About
                     </a>
                 </div>
@@ -96,26 +96,13 @@
                 @endif
 
                 @guest()
-                    {{--NO-AUTH DROPDOWN LINKS--}}
-                    {{--                    <div class="nav-item mx-3 my-auto">--}}
-                    {{--                        <a href="{{ route('login') }}" class="nav-link fs-7 text-seal-brown-50">--}}
-                    {{--                            Login--}}
-                    {{--                        </a>--}}
-                    {{--                    </div>--}}
-
-                    {{--                    <div class="nav-item mx-3 my-auto">--}}
-                    {{--                        <a href="{{ route('register') }}" class="nav-link fs-7 text-seal-brown-50">--}}
-                    {{--                            Register--}}
-                    {{--                        </a>--}}
-                    {{--                    </div>--}}
-                    {{--NO-AUTH DROPDOWN LINKS--}}
                 @else
                     {{--AUTH LINKS--}}
                     <div class="nav-item dropdown mx-3 my-auto">
-                        <a id="navbarDropdown" class="nav-link fs-7 dropdown-toggle text-seal-brown-50" href="#"
+                        <a id="navbarDropdown" class="nav-link fs-7 dropdown-toggle text-bistre fw-600" href="#"
                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ auth()->user()->first_name }}
-                            <img class="ps-2" src="{{ asset('placeholders/profile.png') }}" alt="..."
+                            <img class="ps-2" src="{{ asset('placeholders/profile-secondary.png') }}" alt="..."
                                  style="height: 2rem; width: auto;">
                         </a>
 

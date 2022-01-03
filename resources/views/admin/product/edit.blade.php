@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('header')
+    @include('layouts.partials.header')
+@endsection
 @section('content')
     <div class="container p-5 mb-5">
         <form action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">

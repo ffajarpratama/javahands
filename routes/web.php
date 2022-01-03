@@ -17,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('landing');
+})->name('landing');
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
 //AUTH ROUTES
 //REGISTER ROUTES
@@ -39,11 +42,25 @@ Route::post('profile', [\App\Http\Controllers\AuthController::class, 'updateProf
 //LOGIN ROUTE
 Auth::routes(['register' => false, 'reset' => false]);
 //END LOGIN ROUTE
+
+//REDIRECT ROUTES
+Route::get('/redirect', function () {
+    if (!Auth::check()) {
+        return redirect()->route('landing');
+    }
+    if (Auth::user()->is_admin) {
+        return redirect()->route('admin.home');
+    }
+    return redirect()->route('product.index');
+});
+//END REDIRECT ROUTES
 //END AUTH ROUTES
 
 //ADMIN ROUTES
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->group(function () {
 //ADMIN DASHBOARD
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
     Route::get('/dashboard', [AdminController::class, 'dashboard'])
         ->name('dashboard');
 
@@ -85,7 +102,7 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     //END COMMENT ROUTES
 
     //LIKE ROUTES
-    Route::post('/likes/{comment_id}', [\App\Http\Controllers\LikeController::class , 'like'])
+    Route::post('/likes/{comment_id}', [\App\Http\Controllers\LikeController::class, 'like'])
         ->name('likes.add');
     //END LIKE ROUTES
     //DISLIKE ROUTES
@@ -110,5 +127,3 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     //END ORDER ROUTES
 });
 //END USER ROUTES
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

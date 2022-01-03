@@ -5,7 +5,13 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 //HOME
 Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
-    $trail->push('Home', route('home'));
+    $trail->push('Home', route('landing'));
+});
+
+//ABOUT
+Breadcrumbs::for('about', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('About Us', route('about'));
 });
 
 //PRODUCTS

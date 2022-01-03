@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('header')
+    @include('layouts.partials.header')
+@endsection
 @section('content')
     <div class="container py-5">
         <div class="row g-0 justify-content-center my-5">

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="app">
-    @include('layouts.partials.header')
+    @yield('header')
     <main>
         @yield('content')
     </main>

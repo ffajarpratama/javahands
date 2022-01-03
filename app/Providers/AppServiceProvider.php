@@ -25,10 +25,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('layouts.app', function ($view) {
-            $categories = Category::all();
+        View::composer('*', function ($view) {
+            $categories = Category::query()->withCount('products')->get();
             return $view->with([
                 'categories' => $categories
+            ]);
+        });
+
+        View::composer('landing', function ($view) {
+            $landing_category = Category::query()
+                ->withCount('products')
+                ->latest()
+                ->take(3)
+                ->get();
+            return $view->with([
+                'landing_categories' => $landing_category
             ]);
         });
     }

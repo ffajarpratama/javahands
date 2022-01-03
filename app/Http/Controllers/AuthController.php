@@ -79,7 +79,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->forget('user');
 
-        return redirect()->route('home');
+        return redirect()->route('product.index');
     }
 
     public function updateProfile(Request $request)

@@ -400,4 +400,26 @@
         border-radius: 3px;
     }
 
+    header {
+        width: 810px;
+        min-height: 610px;
+        border-radius: 0 0 30px 30px;
+        background: linear-gradient(109.39deg, #564134 16.93%, #1D0C03 77.05%);
+    }
+
+    .hidden-spacer {
+        height: 56px
+    }
+
+    .btn-jh-white {
+        background-color: white;
+        color: #3A2218;
+    }
+
+    .btn-jh-white:hover {
+        border-color: white;
+        background-color: transparent;
+        color: white;
+    }
+
 </style>
