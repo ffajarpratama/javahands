@@ -33,11 +33,11 @@
                             <p class="mb-0 fs-24-px fw-700 text-bistre">
                                 {{ $user->getFullNameAttribute() }}
                             </p>
-                            <button type="button" class="btn btn-jh-secondary">
+                            <a href="{{ route('user.profile.details', $user->id) }}" class="btn btn-jh-secondary">
                                 Setting
-                            </button>
+                            </a>
                         </div>
-                        <div class="row g-0 mb-3">
+                        <div class="row g-0">
                             <div class="col-md-6">
                                 <p class="my-4 text-secondary fw-400">
                                     {{ $user->phone_number }}
@@ -45,15 +45,17 @@
                                 <p class="text-secondary fw-400">
                                     {{ $user->email }}
                                 </p>
-                                <p class="text-secondary fw-400">
-                                    @if($user->state)
-                                        {{ $user->address }}, {{ $user->state->name }}, {{ $user->getCountryName() }}
-                                    @else
-                                        {{ $user->address }}
-                                    @endif
-                                </p>
+
                             </div>
                         </div>
+
+                        <p class="text-secondary fw-400">
+                            @if($user->state)
+                                {{ $user->address }}, {{ $user->state->name }}, {{ $user->getCountryName() }}
+                            @else
+                                {{ $user->address }}
+                            @endif
+                        </p>
                         <hr style="color: #C4C4C4; border-radius: 2px; height: 4px;">
                     </div>
                 </div>
@@ -171,7 +173,7 @@
                                             Subtotal
                                         </p>
                                         <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
-                                            {{ '$' . number_format($cart->sum('sub_total')) }}
+                                            {{ '$' . number_format($carts->sum('sub_total')) }}
                                         </p>
                                     </div>
                                     <div class="d-flex flex-row justify-content-between align-items-center">
@@ -202,7 +204,7 @@
                                             Total
                                         </p>
                                         <p class="mb-0 col-md-4 text-center text-jh-brown fs-20-px fw-700">
-                                            {{ '$' . number_format($cart->sum('sub_total')) }}
+                                            {{ '$' . number_format($carts->sum('sub_total')) }}
                                         </p>
                                     </div>
 
@@ -212,6 +214,21 @@
                                         </a>
                                     </div>
                                 </div>
+                            </div>
+                        @else
+                            <div class="d-flex flex-row justify-content-center align-items-center my-5">
+                                <p class="mb-0 text-black-50 fw-700">
+                                    You haven't picked any product..
+                                </p>
+                            </div>
+                            <div class="d-flex flex-row justify-content-center align-items-center mb-5">
+                                <a href="{{ route('product.index') }}" class="btn btn-jh-primary me-3">
+                                    Go to products
+                                </a>
+                                <a href="{{ route('user.order.index') }}" class="btn btn-jh-secondary">
+                                    Check your orders
+                                    <i class="fas fa-receipt ms-2"></i>
+                                </a>
                             </div>
                         @endif
                     </div>

@@ -4,7 +4,6 @@
 @endsection
 @section('content')
     <div class="container p-5 mb-5">
-
         <div class="row g-0 mb-4">
             @if(session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
@@ -22,11 +21,11 @@
         </div>
 
         <div class="d-flex flex-row mb-3">
-            {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('checkout') }}
+            {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('profile-details', $user) }}
         </div>
 
-        <div class="row g-0 justify-content-between">
-            <div class="col-md-5">
+        <div class="row g-0 justify-content-start">
+            <div class="col-md-6">
                 <div class="card cart-cards">
                     <div class="card-body p-5">
                         <form action="{{ route('user.profile.update', $user->id) }}" method="POST">
@@ -34,11 +33,8 @@
                             @method('PUT')
                             <div class="d-flex flex-row justify-content-between align-items-center">
                                 <p class="mb-0 fs-24-px fw-700 text-bistre">
-                                    Shipping Address
+                                    Your Contact and Shipping Address
                                 </p>
-                                <button type="submit" class="btn btn-jh-secondary">
-                                    Update
-                                </button>
                             </div>
 
                             <hr style="color: #C4C4C4; border-radius: 2px; height: 4px;">
@@ -220,186 +216,17 @@
                                 </div>
                                 @enderror
                             </div>
+
+                            <div class="d-flex flex-row justify-content-end align-items-center">
+                                <a href="{{ route('user.cart.index') }}" class="btn btn-jh-secondary me-2">
+                                    Back
+                                </a>
+                                <button type="submit" class="btn btn-jh-primary">
+                                    Update
+                                </button>
+                            </div>
+
                         </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-7 px-3">
-                <div class="card cart-cards">
-                    <div class="card-body p-5">
-                        <div class="row g-0">
-                            <p class="mb-0 fs-24-px fw-700 text-bistre">
-                                Your Cart
-                            </p>
-
-                            <hr class="mt-4" style="color: #C4C4C4; border-radius: 2px; height: 4px;">
-                        </div>
-
-                        <div class="d-flex flex-row justify-content-between mb-3">
-                            <div class="col-md-4">
-                                <p class="mb-0 fw-700 text-bistre">
-                                    Products
-                                </p>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <p class="mb-0 fw-700 text-bistre">
-                                    Price
-                                </p>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <p class="mb-0 fw-700 text-bistre">
-                                    Amounts
-                                </p>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <p class="mb-0 fw-700 text-bistre">
-                                    Subtotal
-                                </p>
-                            </div>
-                        </div>
-
-                        <hr style="color: #C4C4C4">
-
-                        @if($carts->isNotEmpty())
-                            @foreach($carts as $cart)
-                                <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-md-4">
-                                        <div class="d-flex flex-row justify-content-start align-items-center">
-                                            @if(!$cart->product->picture)
-                                                <img class="cart-product-img"
-                                                     src="{{ asset('placeholders/products/product-placeholder.png') }}"
-                                                     alt="...">
-                                            @else
-                                                <img class="cart-product-img"
-                                                     src="{{ asset('storage/products/' . $cart->product->picture) }}"
-                                                     alt="...">
-                                            @endif
-
-                                            <p class="mb-0 fs-7 text-bistre fw-400 ms-3">
-                                                {{ $cart->product->name }}
-                                            </p>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-2 text-center">
-                                        <p class="mb-0 fs-7 text-bistre fw-400">
-                                            {{ '$' . number_format($cart->unit_price) }}
-                                        </p>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <p class="mb-0 fs-7 text-bistre fw-400">
-                                            {{ $cart->quantity }}
-                                        </p>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <p class="mb-0 fs-7 text-bistre fw-600">
-                                            {{ '$' . number_format($cart->sub_total) }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <hr style="color: #C4C4C4">
-                            @endforeach
-
-                            <div class="d-flex flex-row justify-content-between mb-3">
-                                <p class="mb-0 fw-700 text-bistre">
-                                    Shipping
-                                </p>
-                            </div>
-
-                            <hr style="color: #C4C4C4">
-
-                            <div class="row g-0 justify-content-between mb-3">
-                                <div class="col-md-10">
-                                    <p class="mb-1 fs-7 fw-400 text-bistre">
-                                        Total Weight
-                                    </p>
-                                    <p class="mb-0 fs-12-px fw-400 text-danger">
-                                        *Our shipping cost are based on total weight and dimension of the products. For
-                                        example, you can ship three rattan bags for the same shipping cost
-                                    </p>
-                                </div>
-                                <div class="col-md-2 text-center">
-                                    <p class="mb-0 fs-7 fw-600 text-bistre">
-                                        0.3 kg
-                                    </p>
-                                </div>
-                            </div>
-
-                                <form id="order-form" action="{{ route('user.order.store') }}" method="POST">
-                                    @csrf
-                                    @method('POST')
-                                    <div class="row g-0 mb-3">
-                                        <select class="form-select fs-7 text-bistre @error('shipping_price') is-invalid @enderror"
-                                                name="shipping_price" id="shipping_price" aria-label="shipping_price"
-                                                style="border: 1px solid #2E190D; box-sizing: border-box; border-radius: 8px;">
-                                            <option value="45">FedEx (Regular) 7-10 Business Days ($45)</option>
-                                        </select>
-
-                                        @error('shipping_price')
-                                        <div class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
-                                        @enderror
-                                    </div>
-                                </form>
-
-
-                            <hr class="mt-4" style="color: #C4C4C4; border-radius: 2px; height: 4px;">
-
-                            <div class="row g-0 justify-content-end mb-3">
-                                <div class="col-md-6">
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <p class="mb-0 col text-jh-brown fw-400">
-                                            Subtotal
-                                        </p>
-                                        <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
-                                            {{ '$' . number_format($carts->sum('sub_total')) }}
-                                        </p>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <p class="mb-0 col text-jh-brown fw-400">
-                                            Taxes
-                                        </p>
-                                        <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
-                                            Free
-                                        </p>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <p class="mb-0 col text-jh-brown fw-400">
-                                            Shipping
-                                        </p>
-                                        <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
-                                            -
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr class="mt-4" style="color: #C4C4C4; border-radius: 2px; height: 4px;">
-
-                            <div class="row g-0 justify-content-end mb-3">
-                                <div class="col-md-6">
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <p class="mb-0 col text-jh-brown fs-20-px fw-700">
-                                            Total
-                                        </p>
-                                        <p class="mb-0 col-md-4 text-center text-jh-brown fs-20-px fw-700">
-                                            {{ '$' . number_format($carts->sum('sub_total')) }}
-                                        </p>
-                                    </div>
-
-                                    <div class="d-grid gap-2 mt-5">
-                                        <button class="btn btn-jh-secondary fs-20-px fw-700"
-                                        onclick="event.preventDefault(); document.getElementById('order-form').submit();">
-                                            Checkout
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
             </div>

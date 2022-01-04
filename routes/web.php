@@ -1,6 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ReplyController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DislikeController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,18 +34,16 @@ Route::get('/about', function () {
 
 //AUTH ROUTES
 //REGISTER ROUTES
-Route::get('register', [\App\Http\Controllers\AuthController::class, 'getRegisterPage'])
+Route::get('register', [AuthController::class, 'getRegisterPage'])
     ->name('register');
-Route::post('register', [\App\Http\Controllers\AuthController::class, 'storeUserDetails'])
+Route::post('register', [AuthController::class, 'storeUserDetails'])
     ->name('register.first.step');
-Route::get('/getStates/{id}', [\App\Http\Controllers\AuthController::class, 'getStates'])
+Route::get('/getStates/{id}', [AuthController::class, 'getStates'])
     ->name('register.get.states');
-Route::get('register/address', [\App\Http\Controllers\AuthController::class, 'getStepTwoRegisterPage'])
+Route::get('register/address', [AuthController::class, 'getStepTwoRegisterPage'])
     ->name('register.address');
-Route::post('register/address', [\App\Http\Controllers\AuthController::class, 'storeUserToDatabase'])
+Route::post('register/address', [AuthController::class, 'storeUserToDatabase'])
     ->name('register.second.step');
-Route::post('profile', [\App\Http\Controllers\AuthController::class, 'updateProfile'])
-    ->name('profile.update');
 //END REGISTER ROUTES
 
 //LOGIN ROUTE
@@ -49,7 +56,7 @@ Route::get('/redirect', function () {
         return redirect()->route('landing');
     }
     if (Auth::user()->is_admin) {
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
     return redirect()->route('product.index');
 });
@@ -59,23 +66,26 @@ Route::get('/redirect', function () {
 //ADMIN ROUTES
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.admin'])->group(function () {
 //ADMIN DASHBOARD
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])
         ->name('dashboard');
 
     Route::resource('/product', \App\Http\Controllers\Admin\ProductController::class)
         ->except(['index', 'show']);
 
-    Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class)
+    Route::resource('/categories', CategoryController::class)
         ->except('show');
 
-    Route::post('/addReply/{comment}', [\App\Http\Controllers\Admin\ReplyController::class, 'addReply'])
+    Route::post('/addReply/{comment}', [ReplyController::class, 'addReply'])
         ->name('reply.add');
-    Route::put('/updateReply/{reply}', [\App\Http\Controllers\Admin\ReplyController::class, 'updateReply'])
+    Route::put('/updateReply/{reply}', [ReplyController::class, 'updateReply'])
         ->name('reply.update');
-    Route::delete('/deleteReply/{reply}', [\App\Http\Controllers\Admin\ReplyController::class, 'deleteReply'])
+    Route::delete('/deleteReply/{reply}', [ReplyController::class, 'deleteReply'])
         ->name('reply.delete');
+
+    Route::get('order/details/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'details'])
+        ->name('order.details');
+    Route::put('order/updateOrderProgress/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'updateOrderProgress'])
+        ->name('order.update-progress');
 });
 
 //PRODUCT ROUTES
@@ -91,39 +101,53 @@ Route::get('/product/{product}', [ProductController::class, 'show'])
 //END PRODUCT ROUTES
 
 //USER ROUTES
-Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
+Route::prefix('user')->name('user.')->middleware(['auth', 'auth.user'])->group(function () {
+    //PROFILE ROUTES
+    Route::get('/profile/{user}', [\App\Http\Controllers\ProfileController::class, 'getUserProfile'])
+        ->name('profile.details');
+    Route::put('/profile/update/{user}', [\App\Http\Controllers\ProfileController::class, 'updateProfile'])
+        ->name('profile.update');
+    //END PROFILE ROUTES
+
     //COMMENT ROUTES
-    Route::post('/comment/{product}/{user}', [\App\Http\Controllers\CommentController::class, 'store'])
+    Route::post('/comment/{product}/{user}', [CommentController::class, 'store'])
         ->name('comment.store');
-    Route::put('/comment/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])
+    Route::put('/comment/{comment}', [CommentController::class, 'update'])
         ->name('comment.update');
-    Route::delete('/comment/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])
+    Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])
         ->name('comment.delete');
     //END COMMENT ROUTES
 
     //LIKE ROUTES
-    Route::post('/likes/{comment_id}', [\App\Http\Controllers\LikeController::class, 'like'])
+    Route::post('/likes/{comment_id}', [LikeController::class, 'like'])
         ->name('likes.add');
     //END LIKE ROUTES
     //DISLIKE ROUTES
-    Route::post('/dislikes/{comment_id}', [\App\Http\Controllers\DislikeController::class, 'dislike'])
+    Route::post('/dislikes/{comment_id}', [DislikeController::class, 'dislike'])
         ->name('dislikes.add');
     //END DISLIKE ROUTES
 
     //CART ROUTES
-    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])
+    Route::get('/cart', [CartController::class, 'index'])
         ->name('cart.index');
-    Route::post('/cart/{product}/{user}', [\App\Http\Controllers\CartController::class, 'store'])
+    Route::post('/cart/{product}/{user}', [CartController::class, 'store'])
         ->name('cart.store');
     //END CART ROUTES
 
     //ORDER ROUTES
-    Route::get('/order', [\App\Http\Controllers\OrderController::class, 'create'])
+    Route::get('/order', [OrderController::class, 'index'])
+        ->name('order.index');
+    Route::get('/order/create', [OrderController::class, 'create'])
         ->name('order.create');
-    Route::post('/order', [\App\Http\Controllers\OrderController::class, 'store'])
+    Route::post('/order', [OrderController::class, 'store'])
         ->name('order.store');
-    Route::get('/order/details', [\App\Http\Controllers\OrderController::class, 'details'])
+    Route::get('/order/details/{order}', [OrderController::class, 'details'])
         ->name('order.details');
+    Route::put('/order/received/{order}', [OrderController::class, 'received'])
+        ->name('order.received');
+
+    Route::put('/order/payment/{order}', [PaymentController::class, 'storePayment'])
+        ->name('order.payment');
     //END ORDER ROUTES
 });
 //END USER ROUTES

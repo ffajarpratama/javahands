@@ -4,7 +4,6 @@
 @endsection
 @section('content')
     <div class="container p-5 mb-5">
-
         <div class="row g-0 mb-4">
             @if(session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
@@ -21,8 +20,13 @@
             @endif
         </div>
 
-        <div class="d-flex flex-row mb-3">
-            {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('order-details', $order) }}
+        <div class="d-flex flex-row justify-content-between mb-3">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-jh-primary btn-icon-split me-3">
+                <div class="icon text-white">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="text">Dashboard</div>
+            </a>
         </div>
 
         <div class="row g-0 justify-content-between">
@@ -45,7 +49,7 @@
                                 <p class="mb-0">:</p>
                             </div>
                             <div class="col-md-7">
-                                <p class="mb-0">{{ $user->getFullNameAttribute() }}</p>
+                                <p class="mb-0">{{ $order->user->getFullNameAttribute() }}</p>
                             </div>
                         </div>
 
@@ -57,13 +61,14 @@
                                 <p class="mb-0">:</p>
                             </div>
                             <div class="col-md-7">
-                                @if($user->state)
+                                @if($order->user->state)
                                     <p class="mb-0">
-                                        {{ $user->address }}, {{ $user->state->name }}, {{ $user->getCountryName() }}
+                                        {{ $order->user->address }}, {{ $order->user->state->name }}
+                                        , {{ $order->user->getCountryName() }}
                                     </p>
                                 @else
                                     <p class="mb-0">
-                                        {{ $user->address }}
+                                        {{ $order->user->address }}
                                     </p>
                                 @endif
                             </div>
@@ -77,136 +82,94 @@
                                 <p class="mb-0">:</p>
                             </div>
                             <div class="col-md-7">
-                                <p class="mb-0">{{ $user->email }}</p>
-                                <p class="mb-0">{{ $user->phone_number }}</p>
+                                <p class="mb-0">{{ $order->user->email }}</p>
+                                <p class="mb-0">{{ $order->user->phone_number }}</p>
                             </div>
                         </div>
 
                         <hr style="color: #C4C4C4; border-radius: 2px; height: 4px;">
 
-                        @if($order->payment_status === 'CREATED')
-                            <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                <p class="mb-0 fs-24-px fw-700 text-bistre">
-                                    Payment Method
-                                </p>
-                            </div>
-
-                            <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                <p class="mb-0 fs-7 text-bistre">
-                                    please choose your payment method (All transactions are secure and confidential)
-                                </p>
-                            </div>
-
-                            <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                <div class="col-md-7">
-                                    <form action="{{ route('user.order.payment', $order->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="d-grid gap-2">
-                                            <button class="btn btn-jh-secondary">
-                                                Credit/Debit Card
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <img src="{{ asset('placeholders/visa.png') }}" alt="...">
-                                        <img src="{{ asset('placeholders/mastercard.png') }}" alt="...">
-                                        <img src="{{ asset('placeholders/american-express.png') }}" alt="...">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                <div class="col-md-7">
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-jh-secondary" disabled>
-                                            PayPal
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <img src="{{ asset('placeholders/paypal.png') }}" alt="...">
-                                        and more...
-                                    </div>
-                                </div>
-                            </div>
-                        @elseif($order->payment_status === 'PAID')
-                            <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                <p class="mb-0 fs-24-px fw-700 text-bistre">
-                                    Your Order Progress
-                                </p>
-                            </div>
-
+                        <div class="d-flex flex-row justify-content-between align-items-center mb-3">
+                            <p class="mb-0 fs-24-px fw-700 text-bistre">
+                                Order Progress
+                            </p>
                             @if($order->order_progress === 'IN_PACKAGING')
-                                <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                    <div class="fs-20-px fw-700 badge bg-warning text-dark">
-                                        In Packaging
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                    <p class="mb-0 fs-7 text-bistre">
-                                        Please wait, we are still packaging your products. When the process is complete, we
-                                        will send it at once!
-                                    </p>
+                                <div class="fs-20-px fw-700 badge bg-warning text-dark">
+                                    In Packaging
                                 </div>
                             @elseif($order->order_progress === 'ON_DELIVERY')
-                                <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                    <div class="fs-20-px fw-700 badge bg-info text-dark">
-                                        On Delivery
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                    <p class="mb-0 fs-7 text-bistre">
-                                        Sit tight! Your product is being sent to your address!
-                                    </p>
-                                </div>
-                                <p class="mb-0 fs-7 text-bistre">
-                                    Here is your shipping receipt number:
-                                </p>
-                                <strong class="fs-7 text-bistre">{{ $order->receipt_number }}</strong>
-
-                                <div class="d-flex flex-row justify-content-between align-items-center mt-3">
-                                    <div class="col-md-10 pe-3">
-                                        <p class="mb-0 fs-7 text-bistre">
-                                            Already receive the package?
-                                        </p>
-                                        <p class="mb-1 fs-7 text-bistre">
-                                            Confirm to us by clicking the button below!
-                                        </p>
-                                        <form action="{{ route('user.order.received', $order->id) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="d-grid gap-2">
-                                                <button type="submit" class="btn fs-7 btn-jh-primary">
-                                                    Package Received!
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                <div class="fs-20-px fw-700 badge bg-info text-dark">
+                                    On Delivery
                                 </div>
                             @elseif($order->order_progress === 'RECEIVED')
-                                <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                    <div class="fs-20-px fw-700 badge bg-success">
-                                        Received
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                                    <div class="col-md-10">
-                                        <p class="mb-1 fs-7 text-bistre">
-                                            Thank you for your purchase! Ready for another? Let's start shopping!
-                                        </p>
-                                        <div class="d-grid gap-2">
-                                            <a href="{{ route('product.index') }}" class="btn fs-7 btn-jh-primary">
-                                                Go to products
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="fs-20-px fw-700 badge bg-success">
+                                    Received
                                 </div>
                             @endif
+                        </div>
+
+                        @if($order->order_progress == 'IN_PACKAGING' || $order->order_progress == 'ON_DELIVERY')
+                            <form action="{{ route('admin.order.update-progress', $order->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="d-flex flex-row mb-2">
+                                    <label for="order_progress" class="fs-7 fw-600">
+                                        Update Order Progress
+                                    </label>
+                                </div>
+
+                                <div class="d-flex flex-row mb-3">
+                                    <select class="form-control fs-7 text-secondary" name="order_progress"
+                                            id="order_progress" required>
+                                        <option value="">Select Status</option>
+                                        <option
+                                            value="IN_PACKAGING" {{ $order->order_progress === 'IN_PACKAGING' ? 'selected' : '' }}>
+                                            In Packaging
+                                        </option>
+                                        <option
+                                            value="ON_DELIVERY" {{ $order->order_progress === 'ON_DELIVERY' ? 'selected' : '' }}>
+                                            On Delivery
+                                        </option>
+                                        <option
+                                            value="RECEIVED" {{ $order->order_progress === 'RECEIVED' ? 'selected' : '' }}>
+                                            Received
+                                        </option>
+                                    </select>
+                                </div>
+
+                                @if($order->order_progress === 'ON_DELIVERY')
+                                    <div class="d-flex flex-row justify-content-between align-items-center mb-3">
+                                        <p class="mb-0 fs-7 text-bistre">
+                                            Shipping receipt number sent!
+                                        </p>
+                                    </div>
+                                @else
+                                    <div class="d-flex flex-row mb-2">
+                                        <label for="receipt_number" class="fs-7 fw-600">
+                                            Shipping Receipt Number
+                                        </label>
+                                    </div>
+
+                                    <div class="d-flex flex-row mb-3">
+                                        <input type="text" class="form-control fs-7" name="receipt_number"
+                                               id="receipt_number" placeholder="Shipping Receipt Number" required>
+                                    </div>
+                                @endif
+
+                                <div class="d-flex flex-row">
+                                    <button class="btn btn-jh-primary" type="submit">
+                                        Update
+                                    </button>
+                                </div>
+                            </form>
+                        @else
+                            <div class="d-flex flex-row justify-content-between align-items-center mb-3">
+                                <p class="mb-0 fs-7 text-bistre">
+                                    Package has been received!
+                                </p>
+                            </div>
                         @endif
+
                     </div>
                 </div>
             </div>
@@ -216,7 +179,7 @@
                     <div class="card-body p-5">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <p class="mb-0 fs-24-px fw-700 text-bistre">
-                                Your Order
+                                Order Details
                             </p>
                             @if($order->payment_status === 'CREATED')
                                 <div class="fs-20-px fw-700 badge bg-warning text-dark">
@@ -224,7 +187,7 @@
                                 </div>
                             @elseif($order->payment_status === 'PENDING')
                                 <div class="fs-20-px fw-700 badge bg-info text-dark">
-                                    Payment Pending
+                                    {{ $order->payment_status }}
                                 </div>
                             @elseif($order->payment_status === 'PAID')
                                 <div class="fs-20-px fw-700 badge bg-success">
@@ -260,10 +223,6 @@
 
                         <hr style="color: #C4C4C4">
 
-                        {{--                        @if($carts->isNotEmpty())--}}
-                        {{--                            --}}
-                        {{--                        @else--}}
-                        {{--                        @endif--}}
                         @foreach($order->carts as $cart)
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-md-4">
@@ -317,10 +276,6 @@
                             <div class="col-md-10">
                                 <p class="mb-1 fs-7 fw-400 text-bistre">
                                     Total Weight
-                                </p>
-                                <p class="mb-0 fs-12-px fw-400 text-danger">
-                                    *Our shipping cost are based on total weight and dimension of the products. For
-                                    example, you can ship three rattan bags for the same shipping cost
                                 </p>
                             </div>
                             <div class="col-md-2 text-center">
@@ -392,9 +347,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-@endsection
-@section('footer')
-    @include('layouts.partials.footer')
 @endsection

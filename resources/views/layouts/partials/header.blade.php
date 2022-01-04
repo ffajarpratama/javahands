@@ -1,5 +1,5 @@
 <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white" aria-label="navbar">
-    <div class="container">
+    <div class="container-fluid px-5">
         {{--BEGIN NAVBAR BRAND--}}
         <a class="navbar-brand" href="{{ url('/') }}">
             <img src="{{ asset('placeholders/logos/jh-logo-text-color.png') }}" alt="jh-logo-text-color"
@@ -107,9 +107,22 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            @if(!auth()->user()->is_admin)
+                                <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('user.profile.details', auth()->id()) }}">
+                                    Your Profile
+                                    <i class="fas fa-user ms-3"></i>
+                                </a>
+
+                                <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('user.order.index') }}">
+                                    Your Orders
+                                    <i class="fas fa-receipt ms-3"></i>
+                                </a>
+                            @endif
+
                             <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('logout') }}"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
+                                <i class="fas fa-sign-out-alt ms-3"></i>
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

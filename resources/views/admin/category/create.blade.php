@@ -1,6 +1,9 @@
-@extends('admin.layouts.master')
+@extends('layouts.app')
+@section('header')
+    @include('layouts.partials.header')
+@endsection
 @section('content')
-    <div class="container-fluid py-5">
+    <div class="container p-5 mb-5">
         <form action="{{ route('admin.categories.store') }}" method="POST">
             @csrf
             @method('POST')
@@ -8,7 +11,7 @@
                 <div class="col-md-10">
                     <div class="card shadow-sm mb-5">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold">Add New Category</h6>
+                            <p class="text-bistre mb-0 fw-700">Add New Category</p>
                         </div>
                         <div class="card-body p-5">
                             <div class="form-group">

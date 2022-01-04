@@ -17,6 +17,7 @@ class CartController extends Controller
         $carts = Cart::query()
             ->with('product')
             ->where('user_id', $user->id)
+            ->where('order_id', null)
             ->get();
         return view('user.cart.index', compact('user', 'carts'));
     }
@@ -26,6 +27,7 @@ class CartController extends Controller
         $selectedProduct = Cart::query()
             ->where('product_id', $product->id)
             ->where('user_id', $user->id)
+            ->where('order_id', null)
             ->first();
 
         if ($selectedProduct) {

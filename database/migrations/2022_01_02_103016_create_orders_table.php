@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('CASCADE')->onDelete('CASCADE');
             $table->string('shipping_price')->nullable();
+            $table->string('receipt_number')->nullable();
             $table->string('total_price')->nullable();
             $table->enum('order_progress', ['IN_PACKAGING', 'ON_DELIVERY', 'RECEIVED'])->nullable();
             $table->enum('payment_status', ['CREATED', 'PENDING', 'PAID'])->nullable();

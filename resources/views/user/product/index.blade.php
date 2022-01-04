@@ -55,6 +55,14 @@
                             </a>
                         </div>
                     @endforeach
+
+                    @if(auth()->check() && auth()->user()->is_admin)
+                        <div class="d-flex flex-row mt-3">
+                            <a href="{{ route('admin.dashboard') }}" class="btn btn-jh-primary">
+                                Go back to dashboard
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
 

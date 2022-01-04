@@ -130,7 +130,7 @@
                     </div>
 
                     <div class="d-grid gap-2 mb-4">
-                        <button class="btn btn-jh-primary fs-7 fw-600" type="submit">
+                        <button class="btn btn-jh-secondary fs-7 fw-600" type="submit">
                             Register
                         </button>
                     </div>

@@ -1,14 +1,17 @@
-@extends('admin.layouts.master')
+@extends('layouts.app')
+@section('header')
+    @include('layouts.partials.header')
+@endsection
 @section('content')
-    <div class="container-fluid py-5">
+    <div class="container p-5 mb-5">
         <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="row justify-content-center">
+            <div class="row g-0 justify-content-center">
                 <div class="col-md-10">
                     <div class="card shadow-sm mb-5">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold">Edit Category</h6>
+                            <p class="text-bistre mb-0 fw-700">Edit Category</p>
                         </div>
                         <div class="card-body p-5">
                             <div class="form-group">

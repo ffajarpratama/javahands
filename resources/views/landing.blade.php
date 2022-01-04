@@ -9,8 +9,7 @@
                     </p>
                     <p class="mb-4 text-white">
                         Discover our handcrafted items with uniqueness and exquisiteness made by the finest artisans
-                        from
-                        Indonesia
+                        from Indonesia
                     </p>
                     <a href="{{ route('product.index') }}" class="btn btn-jh-white fw-600">
                         See Products
@@ -140,9 +139,21 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @if(!auth()->user()->is_admin)
+                                    <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('user.profile.details', auth()->id()) }}">
+                                        Profile
+                                        <i class="fas fa-user ms-3"></i>
+                                    </a>
+
+                                    <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('user.order.index') }}">
+                                        Your Orders
+                                        <i class="fas fa-receipt ms-3"></i>
+                                    </a>
+                                @endif
                                 <a class="dropdown-item text-seal-brown-50 fs-7" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
+                                    <i class="fas fa-sign-out-alt ms-3"></i>
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

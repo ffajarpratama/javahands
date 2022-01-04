@@ -1,23 +1,43 @@
-@extends('admin.layouts.master')
+@extends('layouts.app')
+@section('header')
+    @include('layouts.partials.header')
+@endsection
 @section('content')
-    <div class="container-fluid py-5">
+    <div class="container p-5 mb-5">
 
-        @include('admin.layouts.partials.flash-message')
-
-        <div class="row mb-4">
-            <div class="col-md-1"></div>
-            <div class="col-md-5">
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-jh-primary btn-icon-split">
-                    <div class="icon text-white">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="text">Add New Category</div>
-                </a>
-            </div>
+        <div class="row g-0 mb-4">
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                    <strong>{{ session('success') }}</strong>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                </div>
+            @elseif(session()->has('danger'))
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong>{{ session('danger') }}</strong>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                </div>
+            @endif
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row g-0 justify-content-center">
             <div class="col-md-10">
+                <div class="d-flex flex-row justify-content-between mb-3">
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-jh-primary btn-icon-split me-3">
+                        <div class="icon text-white">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <div class="text">Dashboard</div>
+                    </a>
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-jh-primary btn-icon-split">
+                        <div class="icon text-white">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="text">Add New Category</div>
+                    </a>
+                </div>
+
                 <div class="row row-cols-3 row-cols-md-4 g-4">
                     @foreach($categories as $category)
                         <div class="col">
@@ -29,15 +49,18 @@
                                         </div>
                                         <div class="col-md-auto">
                                             <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                <a class="dropdown-toggle text-secondary" type="button"
+                                                   id="categoryActionDropdown" data-bs-toggle="dropdown"
+                                                   aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </a>
-                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                     aria-labelledby="dropdownMenuLink" style="">
-                                                    <div class="dropdown-header">Action</div>
-                                                    <a class="dropdown-item"
-                                                       href="{{ route('admin.categories.edit', $category->id) }}">Edit</a>
+                                                <div class="dropdown-menu" aria-labelledby="categoryActionDropdown">
+                                                    <div class="dropdown-header py-1">
+                                                        <p class="mb-0 text-secondary fw-600 fs-7">Action</p>
+                                                    </div>
+                                                    <a class="dropdown-item" href="{{ route('admin.categories.edit', $category->id) }}">
+                                                        Edit
+                                                    </a>
                                                     <form
                                                         action="{{ route('admin.categories.destroy', $category->id) }}"
                                                         method="POST">

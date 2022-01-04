@@ -11,6 +11,21 @@ use WisdomDiala\Countrypkg\Models\State;
 
 class OrderController extends Controller
 {
+    public function index()
+    {
+        $user = User::query()
+            ->where('id', auth()->id())
+            ->first();
+        $orders = Order::query()
+            ->with(['carts', 'carts.product'])
+            ->where('user_id', $user->id)
+//            ->where('payment_status', '=','CREATED')
+            ->latest()
+            ->get();
+//        return $orders;
+        return view('user.order.index', compact('user', 'orders'));
+    }
+
     public function create()
     {
         $user = User::query()
@@ -19,6 +34,7 @@ class OrderController extends Controller
         $carts = Cart::query()
             ->with('product')
             ->where('user_id', $user->id)
+            ->where('order_id', null)
             ->get();
         $countries = Country::all();
         $states = State::all();
@@ -38,12 +54,14 @@ class OrderController extends Controller
         $carts = Cart::query()
             ->with('product')
             ->where('user_id', auth()->id())
+            ->where('order_id', null)
             ->get();
         $shipping_price = $request->shipping_price;
         $total_order_price = $carts->sum('sub_total') + $shipping_price;
         $order = Order::query()->create([
             'user_id' => auth()->id(),
             'shipping_price' => $shipping_price,
+            'receipt_number' => null,
             'total_price' => $total_order_price,
             'order_progress' => 'IN_PACKAGING',
             'payment_status' => 'CREATED',
@@ -54,15 +72,28 @@ class OrderController extends Controller
                 'order_id' => $order->id
             ]);
         }
-        return redirect()->back()->with('success', 'Order has been placed!');
+        return redirect()->route('user.order.details', $order->id)->with('success', 'Order has been placed!');
     }
 
-    public function details()
+    public function details($id)
     {
+        $user = User::query()
+            ->where('id', auth()->id())
+            ->first();
         $order = Order::query()
             ->with(['user', 'carts', 'carts.product'])
+            ->where('id', $id)
             ->where('user_id', auth()->id())
-            ->first();
-        return $order->carts;
+            ->firstOrFail();
+        return view('user.order.details', compact('order', 'user'));
+    }
+
+    public function received($id)
+    {
+        $order = Order::query()->find($id);
+        $order->update([
+            'order_progress' => 'RECEIVED'
+        ]);
+        return redirect()->route('user.order.details', $order->id)->with('success', 'Confirmation has been sent to our admin!');
     }
 }

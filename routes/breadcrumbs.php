@@ -43,3 +43,21 @@ Breadcrumbs::for('checkout', function (BreadcrumbTrail $trail) {
     $trail->parent('cart');
     $trail->push('Checkout', route('user.order.create'));
 });
+
+//ORDER INDEX
+Breadcrumbs::for('order', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Your Orders', route('user.order.index'));
+});
+
+//ORDER DETAILS
+Breadcrumbs::for('order-details', function (BreadcrumbTrail $trail, $order) {
+    $trail->parent('order');
+    $trail->push('Order Details', route('user.order.details', $order->id));
+});
+
+//PROFILE DETAILS
+Breadcrumbs::for('profile-details', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('home');
+    $trail->push('Profile Details', route('user.profile.details', $user->id));
+});
