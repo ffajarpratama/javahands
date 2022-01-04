@@ -16,9 +16,13 @@ class AdminAccess
      */
     public function handle(Request $request, Closure $next)
     {
+        //middleware buat ngecek apakah user yang login itu admin atau bukan
+        //cek kalo bukan admin
         if (!auth()->user()->is_admin) {
+            //kalo bukan admin return 403 (forbidden)
             abort(403);
         }
+        //kalo user yang login adalah admin lanjutin proses
         return $next($request);
     }
 }

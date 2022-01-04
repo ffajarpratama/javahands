@@ -411,7 +411,7 @@
                         Was this review helpful?
                     </p>
 
-                    @if($comment->isAuthUserLikedPost() == true)
+                    @if($comment->isAuthUserLikedComment() == true)
                         <button class="btn btn-link text-secondary me-1 p-0 like-btn"
                                 data-content="{{ $comment->id }}"
                                 data-liked="1">
@@ -429,7 +429,7 @@
                         {{ $comment->likes->count() }}
                     </p>
 
-                    @if($comment->isAuthUserDislikedPost() == true)
+                    @if($comment->isAuthUserDislikedComment() == true)
                         <button class="btn btn-link text-secondary me-1 p-0 dislike-btn"
                                 data-content="{{ $comment->id }}"
                                 data-disliked="1">

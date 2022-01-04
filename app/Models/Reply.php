@@ -12,6 +12,7 @@ class Reply extends Model
     protected $table = 'replies';
     protected $guarded = [];
 
+    //one reply to one comment
     public function comment()
     {
         return $this->belongsTo(Comment::class);

@@ -14,7 +14,11 @@ class CountryPackageSeeder extends Seeder
      */
     public function run()
     {
+        //panggil command php artisan g:c
+        //buat ngisi table countries
         Artisan::call('g:c');
+        //panggil command php artisan g:s all
+        //buat ngisi table states
         Artisan::call('g:s all');
     }
 }

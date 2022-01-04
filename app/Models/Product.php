@@ -12,8 +12,10 @@ class Product extends Model
     protected $table = 'products';
     protected $guarded = [];
 
+    //method buat hitung harga diskon product
     public function getDiscountedPrice()
     {
+        //cek kalo product punya diskon
         if ($this->discount != 0) {
             $price = $this->price;
             return $price - ($price * ($this->discount / 100));

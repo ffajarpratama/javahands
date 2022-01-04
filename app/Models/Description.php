@@ -12,6 +12,7 @@ class Description extends Model
     protected $table = 'descriptions';
     protected $guarded = [];
 
+    //one description to one product
     public function product()
     {
         return $this->belongsTo(Product::class);

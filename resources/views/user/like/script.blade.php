@@ -7,7 +7,7 @@
             const like_icon = like_button.find('i');
             let like_counter = $('.like-counter-' + comment_id);
 
-            axios.post('/user/likes/' + comment_id)
+            axios.post('/likes/' + comment_id)
                 .then((response) => {
                     //like comment
                     if (like_button.attr('data-liked') === '0') {
@@ -39,7 +39,7 @@
             const dislike_icon = dislike_button.find('i');
             let dislike_counter = $('.dislike-counter-' + comment_id);
 
-            axios.post('/user/dislikes/' + comment_id)
+            axios.post('/dislikes/' + comment_id)
                 .then((response) => {
                     //dislike comment
                     if (dislike_button.attr('data-disliked') === '0') {
