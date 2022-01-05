@@ -130,10 +130,6 @@
                                             value="ON_DELIVERY" {{ $order->order_progress === 'ON_DELIVERY' ? 'selected' : '' }}>
                                             On Delivery
                                         </option>
-                                        <option
-                                            value="RECEIVED" {{ $order->order_progress === 'RECEIVED' ? 'selected' : '' }}>
-                                            Received
-                                        </option>
                                     </select>
                                 </div>
 
@@ -185,15 +181,16 @@
                                 <div class="fs-20-px fw-700 badge bg-warning text-dark">
                                     Awaiting Payment
                                 </div>
-                            @elseif($order->payment_status === 'PENDING')
-                                <div class="fs-20-px fw-700 badge bg-info text-dark">
-                                    {{ $order->payment_status }}
-                                </div>
                             @elseif($order->payment_status === 'PAID')
                                 <div class="fs-20-px fw-700 badge bg-success">
                                     Payment Complete
                                 </div>
                             @endif
+                        </div>
+                        <div class="d-flex flex-row justify-content-start align-items-center">
+                            <p class="mb-0 text-bistre">
+                                Invoice Number: <strong>{{ $order->invoice_number }}</strong>
+                            </p>
                         </div>
 
                         <hr class="mt-4" style="color: #C4C4C4; border-radius: 2px; height: 4px;">

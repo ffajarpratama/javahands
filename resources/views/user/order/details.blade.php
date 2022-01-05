@@ -99,15 +99,15 @@
 
                             <div class="d-flex flex-row justify-content-between align-items-center mb-3">
                                 <div class="col-md-7">
-                                    <form action="{{ route('user.order.payment', $order->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="d-grid gap-2">
-                                            <button class="btn btn-jh-secondary">
-                                                Credit/Debit Card
-                                            </button>
-                                        </div>
-                                    </form>
+                                    <div class="d-grid gap-2">
+                                        <button type="button" class="btn btn-jh-secondary"
+                                                id="paymentButton"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#paymentModal"
+                                                data-bs-url="{{ route('user.order.payment', $order->id) }}">
+                                            Credit/Debit Card
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="d-flex flex-row justify-content-between align-items-center">
@@ -148,7 +148,8 @@
                                 </div>
                                 <div class="d-flex flex-row justify-content-between align-items-center mb-3">
                                     <p class="mb-0 fs-7 text-bistre">
-                                        Please wait, we are still packaging your products. When the process is complete, we
+                                        Please wait, we are still packaging your products. When the process is complete,
+                                        we
                                         will send it at once!
                                     </p>
                                 </div>
@@ -222,15 +223,16 @@
                                 <div class="fs-20-px fw-700 badge bg-warning text-dark">
                                     Awaiting Payment
                                 </div>
-                            @elseif($order->payment_status === 'PENDING')
-                                <div class="fs-20-px fw-700 badge bg-info text-dark">
-                                    Payment Pending
-                                </div>
                             @elseif($order->payment_status === 'PAID')
                                 <div class="fs-20-px fw-700 badge bg-success">
                                     Payment Complete
                                 </div>
                             @endif
+                        </div>
+                        <div class="d-flex flex-row justify-content-start align-items-center">
+                            <p class="mb-0 text-bistre">
+                                Invoice Number: <strong>{{ $order->invoice_number }}</strong>
+                            </p>
                         </div>
 
                         <hr class="mt-4" style="color: #C4C4C4; border-radius: 2px; height: 4px;">
@@ -260,10 +262,6 @@
 
                         <hr style="color: #C4C4C4">
 
-                        {{--                        @if($carts->isNotEmpty())--}}
-                        {{--                            --}}
-                        {{--                        @else--}}
-                        {{--                        @endif--}}
                         @foreach($order->carts as $cart)
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-md-4">
@@ -392,8 +390,89 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content px-3" style="background: #FFFFFF; border: 1px solid #000000; border-radius: 23px;">
+                <div class="d-flex flex-row justify-content-end align-items-center p-3">
+                    <button type="button" class="btn-close my-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form id="paymentForm" action="" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body mb-3">
+                        <div class="d-flex flex-row justify-content-between">
+                            <p class="mb-0 text-bistre fw-700">
+                                Invoice Number
+                            </p>
+                            <p class="mb-0 text-bistre fw-700">
+                                Amount
+                            </p>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between mb-3">
+                            <p class="mb-0 text-bistre">
+                                {{ $order->invoice_number }}
+                            </p>
+                            <p class="mb-0 text-bistre">
+                                {{ '$' . number_format($order->total_price) }}
+                            </p>
+                        </div>
+
+                        <div class="row g-0 mb-3">
+                            <input type="text" class="form-control form-control-sm" name="cc_number" id="cc_number"
+                                   placeholder="Credit Card Number" aria-label="cc_number" required>
+                        </div>
+
+                        <div class="row g-0 mb-3 justify-content-between mb-3">
+                            <div class="col-md-6 pe-1">
+                                <label for="expiry_date" class="mb-0 fs-7 text-bistre fw-700">
+                                    Expiry Date
+                                </label>
+                                <input type="text" class="form-control form-control-sm" name="expiry_date" id="expiry_date"
+                                       placeholder="MM/YY">
+                            </div>
+                            <div class="col-md-6 ps-1">
+                                <label for="CVV" class="mb-0 fs-7 text-bistre fw-700">
+                                    CVV
+                                </label>
+                                <input type="text" class="form-control form-control-sm" name="CVV" id="CVV"
+                                       placeholder="CVV" required>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <img src="{{ asset('placeholders/lock-icon.png') }}" alt="...">
+                            <p class="mb-0 text-bistre">
+                                Secured Payment
+                            </p>
+                        </div>
+
+                        <div class="row g-0">
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-jh-primary">
+                                        Pay Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('script')
+    <script>
+        const paymentModal = document.getElementById('paymentModal');
+        paymentModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            paymentModal.querySelector('#paymentForm').action = button.getAttribute('data-bs-url');
+        });
+    </script>
 @endsection
 @section('footer')
     @include('layouts.partials.footer')

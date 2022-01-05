@@ -79,6 +79,8 @@ class OrderController extends Controller
         $shipping_price = $request->shipping_price;
         //hitung total_order_price dari jumlah sub_total dari semua cart tadi + shipping price
         $total_order_price = $carts->sum('sub_total') + $shipping_price;
+        //set invoice number sebanyak 14 digit
+        $invoice_number =rand(10000000000000, 99999999999999);
         //save order ke database
         $order = Order::query()->create([
             'user_id' => auth()->id(),
@@ -89,7 +91,7 @@ class OrderController extends Controller
             'order_progress' => 'IN_PACKAGING',
             //dengan payment_status created/menunggu pembayaran
             'payment_status' => 'CREATED',
-            'payment_token' => null
+            'invoice_number' => $invoice_number
         ]);
 
         //untuk setiap cart dari user yang login, update order_id di table carts dengan id order yang barusan dibuat

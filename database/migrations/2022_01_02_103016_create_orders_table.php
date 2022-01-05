@@ -20,8 +20,8 @@ class CreateOrdersTable extends Migration
             $table->string('receipt_number')->nullable();
             $table->string('total_price')->nullable();
             $table->enum('order_progress', ['IN_PACKAGING', 'ON_DELIVERY', 'RECEIVED'])->nullable();
-            $table->enum('payment_status', ['CREATED', 'PENDING', 'PAID'])->nullable();
-            $table->string('payment_token')->nullable();
+            $table->enum('payment_status', ['CREATED', 'PAID'])->nullable();
+            $table->string('invoice_number')->nullable();
             $table->timestamps();
         });
     }

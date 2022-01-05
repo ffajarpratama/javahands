@@ -27,11 +27,11 @@
                     </div>
 
                     <div class="card-body">
-                        <table class="table fs-7 table-hover table-bordered" id="orders_table" aria-describedby="orders_table">
+                        <table class="table alice fs-7 table-hover table-bordered" id="orders_table" aria-describedby="orders_table">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Order ID</th>
+                                <th scope="col">Invoice Number</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Date</th>
                                 <th scope="col" class="text-center">Payment Status</th>
@@ -44,7 +44,7 @@
                                 <tr>
                                     <th scope="row">{{ $loop->index + 1 }}</th>
                                     <td>
-                                        {{ $order->id }}
+                                        {{ $order->invoice_number }}
                                     </td>
                                     <td>
                                         {{ '$' . number_format($order->total_price) }}
