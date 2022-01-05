@@ -414,28 +414,39 @@
             integrity="sha512-xo8nGg61671g6gPcRbOfQnoL+EP5SofzlUHdZ/ciHev4ZU/yeRFf+TM5dhBnv/fl05vveHNmqr+PFtIbPFQ6jw=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        //set countryDropdown buat make package select2
         $(document).ready(function () {
             $('.countryDropdown').select2({
                 theme: "bootstrap-5",
             });
 
             //ON COUNTRY DROPDOWN CLICKED
+            //saat dropdown country diklik, jalankan function
             $('#country').on('change', function () {
+                //ambil country id dari value option
                 const country_id = $(this).val();
+                //ambil dropdown state
                 const state = $('#state');
 
                 //GET ALL STATES FROM THE COUNTRY
+                //kirim request axios dengan method GET ke url: /getStates/{id country}
+                //url: /getStates/{id country} make method getStates($id) di AuthController
                 axios.get('/getStates/' + country_id)
+                //jalankan function saat response diberikan url
                     .then((response) => {
+                        //kosongkan isi dropdown state
                         state.empty();
+                        //ganti isi dropdown state dengan value = id state
                         $.each(response.data, (id, name) => {
                             state.append(new Option(name, id));
                         });
                     }).catch((error) => {
+                        //jika ada error kosongkan dropdown state
                     state.empty();
                 });
             });
 
+            //set input dengan id phone_number buat pake package intlTelInput
             const input = $('#phone_number');
             input.intlTelInput({
                 utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/utils.js',

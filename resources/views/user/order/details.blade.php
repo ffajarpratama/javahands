@@ -467,9 +467,13 @@
 @endsection
 @section('script')
     <script>
+        //modal untuk order payment
         const paymentModal = document.getElementById('paymentModal');
+        //saat modal ditampilkan, jalankan function
         paymentModal.addEventListener('show.bs.modal', function (event) {
             const button = event.relatedTarget;
+            //ambil value dari attribute data-bs-url
+            //set action = url dari data-bs-url pada form dengan id paymentForm pada payment modal
             paymentModal.querySelector('#paymentForm').action = button.getAttribute('data-bs-url');
         });
     </script>
