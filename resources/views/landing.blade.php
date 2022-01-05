@@ -227,25 +227,56 @@
         </div>
 
         <div class="d-flex flex-row justify-content-center mb-5">
-
-            @foreach($landing_categories as $category)
-                <div class="col-md-4 px-3">
-                    <a href="{{ route('product.index', ['category' => $category->name]) }}">
-                        <div class="card border-0 text-white" style="min-height: 411px;">
-                            <img src="{{ asset('placeholders/products/landing-product-1.png') }}" class="card-img"
-                                 alt="...">
-                            <div class="card-img-overlay d-flex flex-column justify-content-end">
-                                <p class="mb-0 fw-200">
-                                    {{ $category->products_count }} products
-                                </p>
-                                <p class="fs-30-px fw-600 mb-0">
-                                    {{ ucwords($category->name) }}
-                                </p>
-                            </div>
+            <div class="col-md-4 px-3">
+                <a href="{{ route('product.index', ['category' => $category->name]) }}">
+                    <div class="card border-0 text-white" style="min-height: 411px;">
+                        <img src="{{ asset('placeholders/products/landing-product-1.png') }}" class="card-img"
+                                alt="...">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <p class="mb-0 fw-200">
+                                {{ $landing_categories[0]->products_count }} products
+                            </p>
+                            <p class="fs-30-px fw-600 mb-0">
+                                {{ ucwords($landing_categories[0]->name) }}
+                            </p>
                         </div>
-                    </a>
-                </div>
-            @endforeach
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 px-3">
+                <a href="{{ route('product.index', ['category' => $category->name]) }}">
+                    <div class="card border-0 text-white" style="min-height: 411px;">
+                        <img src="{{ asset('placeholders/products/landing-product-2.png') }}" class="card-img"
+                                alt="...">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <p class="mb-0 fw-200">
+                                {{ $landing_categories[1]->products_count }} products
+                            </p>
+                            <p class="fs-30-px fw-600 mb-0">
+                                {{ ucwords($landing_categories[1]->name) }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 px-3">
+                <a href="{{ route('product.index', ['category' => $category->name]) }}">
+                    <div class="card border-0 text-white" style="min-height: 411px;">
+                        <img src="{{ asset('placeholders/products/landing-product-3.png') }}" class="card-img"
+                                alt="...">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <p class="mb-0 fw-200">
+                                {{ $landing_categories[2]->products_count }} products
+                            </p>
+                            <p class="fs-30-px fw-600 mb-0">
+                                {{ ucwords($landing_categories[2]->name) }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 @endsection

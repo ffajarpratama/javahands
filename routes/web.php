@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,12 @@ use Illuminate\Support\Facades\Route;
 
 //url: /, GET
 Route::get('/', function () {
-    return view('landing');
+    $landing_categories = Category::query()
+        ->withCount('products')
+        ->latest()
+        ->take(3)
+        ->get();
+    return view('landing', compact('landing_categories'));
 })->name('landing');
 
 //url: /about, GET

@@ -57,7 +57,6 @@ class ProductController extends Controller
         return view('user.product.show', compact('product', 'newProductName', 'productLastName', 'comments'));
     }
 
-
     public function search(Request $request)
     {
         //url: /product/search?search_value

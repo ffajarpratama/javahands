@@ -31,16 +31,5 @@ class AppServiceProvider extends ServiceProvider
                 'categories' => $categories
             ]);
         });
-
-        View::composer('landing', function ($view) {
-            $landing_category = Category::query()
-                ->withCount('products')
-                ->latest()
-                ->take(3)
-                ->get();
-            return $view->with([
-                'landing_categories' => $landing_category
-            ]);
-        });
     }
 }
