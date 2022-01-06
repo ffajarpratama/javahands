@@ -27,7 +27,6 @@
         </div>
     </div>
 
-
     <nav class="navbar fixed-top navbar-expand-md navbar-light" aria-label="navbar">
         <div class="container">
             {{--BEGIN NAVBAR BRAND--}}
@@ -228,9 +227,9 @@
 
         <div class="d-flex flex-row justify-content-center mb-5">
             <div class="col-md-4 px-3">
-                <a href="{{ route('product.index', ['category' => $category->name]) }}">
+                <a href="{{ route('product.index', ['category' => $landing_categories[0]->name]) }}">
                     <div class="card border-0 text-white" style="min-height: 411px;">
-                        <img src="{{ asset('placeholders/products/landing-product-1.png') }}" class="card-img"
+                    <img src="{{ asset('placeholders/products/landing-product-2.png') }}" class="card-img"
                                 alt="...">
                         <div class="card-img-overlay d-flex flex-column justify-content-end">
                             <p class="mb-0 fw-200">
@@ -245,9 +244,9 @@
             </div>
 
             <div class="col-md-4 px-3">
-                <a href="{{ route('product.index', ['category' => $category->name]) }}">
+                <a href="{{ route('product.index', ['category' => $landing_categories[1]->name]) }}">
                     <div class="card border-0 text-white" style="min-height: 411px;">
-                        <img src="{{ asset('placeholders/products/landing-product-2.png') }}" class="card-img"
+                        <img src="{{ asset('placeholders/products/landing-product-1.png') }}" class="card-img"
                                 alt="...">
                         <div class="card-img-overlay d-flex flex-column justify-content-end">
                             <p class="mb-0 fw-200">
@@ -262,7 +261,7 @@
             </div>
 
             <div class="col-md-4 px-3">
-                <a href="{{ route('product.index', ['category' => $category->name]) }}">
+                <a href="{{ route('product.index', ['category' => $landing_categories[2]->name]) }}">
                     <div class="card border-0 text-white" style="min-height: 411px;">
                         <img src="{{ asset('placeholders/products/landing-product-3.png') }}" class="card-img"
                                 alt="...">
