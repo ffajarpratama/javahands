@@ -327,8 +327,9 @@
                                     Total Weight
                                 </p>
                                 <p class="mb-0 fs-12-px fw-400 text-danger">
-                                    *Our shipping cost are based on total weight and dimension of the products. For
-                                    example, you can ship three rattan bags for the same shipping cost
+                                    *Our shipping cost are based on total weight and dimension of the products. <br>
+                                    Total weight less than 1kg be charged the base shipping price. <br>
+                                    While any additional kilos will be charged $15 each.
                                 </p>
                             </div>
                             <div class="col-md-2 text-center">
@@ -357,7 +358,7 @@
                             <div class="col-md-6">
                                 <div class="d-flex flex-row justify-content-between align-items-center">
                                     <p class="mb-0 col text-jh-brown fw-400">
-                                        Subtotal
+                                        Products Subtotal
                                     </p>
                                     <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
                                         {{ '$' . number_format($order->carts->sum('sub_total')) }}
@@ -373,7 +374,7 @@
                                 </div>
                                 <div class="d-flex flex-row justify-content-between align-items-center">
                                     <p class="mb-0 col text-jh-brown fw-400">
-                                        Shipping
+                                        Shipping Subtotal
                                     </p>
                                     <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
                                         {{ '$' . number_format($order->shipping_price) }}

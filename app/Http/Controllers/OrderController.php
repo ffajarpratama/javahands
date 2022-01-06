@@ -75,10 +75,31 @@ class OrderController extends Controller
             ->where('order_id', null)
             ->get();
 
-        //ambil shipping price dari input
-        $shipping_price = $request->shipping_price * ceil($carts->sum('total_weight'));
-        //hitung total_order_price dari jumlah sub_total dari semua cart tadi + shipping price
-        $total_order_price = $carts->sum('sub_total') + $shipping_price;
+        //ambil shipping price dari input, lalu ubah shipping price ke integer
+        $base_shipping_price = (Int)$request->shipping_price;
+        //set additional charge per kilo
+        $additional_charge = 15;
+
+        //ambil sum dari total weight di carts, lalu dibulatkan
+        $total_weight = round($carts->sum('total_weight'));
+        //ambil sum dari sub total di carts
+        $sub_total = $carts->sum('sub_total');
+
+        //jika total weight > 1
+        if ($total_weight > 1) {
+            //total weight - 1
+            $total_weight = $total_weight - 1;
+            //shipping price = base shipping price + (total weight yang sudah dikurangi 1 * 15)
+            $shipping_price = $base_shipping_price + ($total_weight * $additional_charge);
+        } else {
+            //jika total weight kurang dari sama dengan 1
+            //shipping price = base shipping price
+            $shipping_price = $base_shipping_price;
+        }
+
+        //order price = shipping price + sub total
+        $order_price = $shipping_price + $sub_total;
+
         //set invoice number sebanyak 14 digit
         $invoice_number = rand(10000000000000, 99999999999999);
         //save order ke database
@@ -86,7 +107,7 @@ class OrderController extends Controller
             'user_id' => auth()->id(),
             'shipping_price' => $shipping_price,
             'receipt_number' => null,
-            'total_price' => $total_order_price,
+            'total_price' => $order_price,
             //saat order pertama kali dibuat, progress order = in_packaging/sedang dikemas
             'order_progress' => 'IN_PACKAGING',
             //dengan payment_status created/menunggu pembayaran

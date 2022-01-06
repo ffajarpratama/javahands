@@ -246,7 +246,8 @@
                                 <p class="mb-0 fw-700 text-bistre">
                                     Weight
                                 </p>
-                            </div><div class="col-md-2 text-center">
+                            </div>
+                            <div class="col-md-2 text-center">
                                 <p class="mb-0 fw-700 text-bistre">
                                     Price
                                 </p>
@@ -326,8 +327,9 @@
                                         Total Weight
                                     </p>
                                     <p class="mb-0 fs-12-px fw-400 text-danger">
-                                        *Our shipping cost are based on total weight and dimension of the products. For
-                                        example, you can ship three rattan bags for the same shipping cost
+                                        *Our shipping cost are based on total weight and dimension of the products. <br>
+                                        Total weight less than 1kg be charged the base shipping price. <br>
+                                        While any additional kilos will be charged $15 each.
                                     </p>
                                 </div>
                                 <div class="col-md-2 text-center">
@@ -337,25 +339,26 @@
                                 </div>
                             </div>
 
-                                <form id="order-form" action="{{ route('user.order.store') }}" method="POST">
-                                    @csrf
-                                    @method('POST')
-                                    <div class="row g-0 mb-3">
-                                        <select class="form-select fs-7 text-bistre @error('shipping_price') is-invalid @enderror"
-                                                name="shipping_price" id="shipping_price" aria-label="shipping_price"
-                                                onchange="getShippingPrice()" style="border: 1px solid #2E190D; box-sizing: border-box; border-radius: 8px;">
-                                            <option value="">Select Shipping Option</option>
-                                            <option value="45">FedEx (Regular) 7-10 Business Days ($45)</option>
-                                            <option value="100">FedEx (Express) 3-5 Business Days ($100)</option>
-                                        </select>
+                            <form id="order-form" action="{{ route('user.order.store') }}" method="POST">
+                                @csrf
+                                @method('POST')
+                                <div class="row g-0 mb-3">
+                                    <select
+                                        class="form-select fs-7 text-bistre @error('shipping_price') is-invalid @enderror"
+                                        name="shipping_price" id="shipping_price" aria-label="shipping_price"
+                                        onchange="getShippingPrice()"
+                                        style="border: 1px solid #2E190D; box-sizing: border-box; border-radius: 8px;">
+                                        <option value="">Select Shipping Option</option>
+                                        <option value="45">FedEx (Regular) 7-10 Business Days ($45)</option>
+                                    </select>
 
-                                        @error('shipping_price')
-                                        <div class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
-                                        @enderror
+                                    @error('shipping_price')
+                                    <div class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
                                     </div>
-                                </form>
+                                    @enderror
+                                </div>
+                            </form>
 
 
                             <hr class="mt-4" style="color: #C4C4C4; border-radius: 2px; height: 4px;">
@@ -364,7 +367,7 @@
                                 <div class="col-md-6">
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <p class="mb-0 col text-jh-brown fw-400">
-                                            Subtotal
+                                            Product Subtotal
                                         </p>
                                         <p class="mb-0 col-md-4 text-center text-jh-brown fw-400">
                                             {{ '$' . number_format($carts->sum('sub_total')) }}
@@ -380,9 +383,10 @@
                                     </div>
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <p class="mb-0 col text-jh-brown fw-400">
-                                            Shipping
+                                            Shipping Subtotal
                                         </p>
-                                        <p class="mb-0 col-md-4 text-center text-jh-brown fw-400" id="shipping_price_text">
+                                        <p class="mb-0 col-md-4 text-center text-jh-brown fw-400"
+                                           id="shipping_price_text">
                                             -
                                         </p>
                                     </div>
@@ -397,14 +401,15 @@
                                         <p class="mb-0 col text-jh-brown fs-20-px fw-700">
                                             Total
                                         </p>
-                                        <p class="mb-0 col-md-4 text-center text-jh-brown fs-20-px fw-700" id="total_order_price_text">
+                                        <p class="mb-0 col-md-4 text-center text-jh-brown fs-20-px fw-700"
+                                           id="total_order_price_text">
                                             {{ '$' . number_format($carts->sum('sub_total')) }}
                                         </p>
                                     </div>
 
                                     <div class="d-grid gap-2 mt-5">
                                         <button class="btn btn-jh-secondary fs-20-px fw-700"
-                                        onclick="event.preventDefault(); document.getElementById('order-form').submit();">
+                                                onclick="event.preventDefault(); document.getElementById('order-form').submit();">
                                             Checkout
                                         </button>
                                     </div>
@@ -443,7 +448,7 @@
                 //kirim request axios dengan method GET ke url: /getStates/{id country}
                 //url: /getStates/{id country} make method getStates($id) di AuthController
                 axios.get('/getStates/' + country_id)
-                //jalankan function saat response diberikan url
+                    //jalankan function saat response diberikan url
                     .then((response) => {
                         //kosongkan isi dropdown state
                         state.empty();
@@ -452,7 +457,7 @@
                             state.append(new Option(name, id));
                         });
                     }).catch((error) => {
-                        //jika ada error kosongkan dropdown state
+                    //jika ada error kosongkan dropdown state
                     state.empty();
                 });
             });
@@ -467,25 +472,40 @@
         //script buat nentuin shipping_price
         //function setiap kali option di shipping_price dropdown berubah/dipilih
         function getShippingPrice() {
-            //bikin variable shipping_price sama total_order_price
+            //bikin variable shipping_price sama order_price
             let shipping_price = 0;
-            let total_order_price = 0;
+            let order_price = 0;
             //ambil selected value dari dropdown shipping_option
-            const selected_shipping_option = document.forms['order-form'].elements['shipping_price'].options[document.forms[
-                'order-form'].elements['shipping_price'].selectedIndex].value;
+            const selected_shipping_option = document.forms['order-form'].elements['shipping_price']
+                .options[document.forms['order-form'].elements['shipping_price'].selectedIndex].value;
+            //ubah selected value ke integer
+            const base_shipping_price = parseInt(selected_shipping_option);
+            //set additional_charge per kilo
+            const additional_charge = 15;
 
             //ambil sum dari total_weight di carts
-            const total_weight = Math.round({!! $carts->sum('total_weight') !!});
+            let total_weight = Math.round({!! $carts->sum('total_weight') !!});
             //ambil sum dari sub_total di carts
             const sub_total = {!! $carts->sum('sub_total') !!};
-            //shipping price = harga shipping option * total_weight
-            shipping_price = selected_shipping_option * total_weight;
-            //total order price = shipping price + sub_total
-            total_order_price = shipping_price + sub_total;
+
+            //jika total weight > 1
+            if (total_weight > 1) {
+                //total weight - 1
+                total_weight = total_weight - 1;
+                //shipping price = base shipping price + (total weight yang sudah dikurangi 1 * 15)
+                shipping_price = base_shipping_price + (total_weight * additional_charge);
+            } else {
+                //jika total weight kurang dari sama dengan 1
+                //shipping price = base shipping price;
+                shipping_price = base_shipping_price;
+            }
+
+            //order price = shipping price + sub_total
+            order_price = shipping_price + sub_total;
             //ambil tag p dengan id shipping_price_text, set textnya jadi shipping_price yang baru
             $('#shipping_price_text').text('$' + shipping_price);
-            //ambil tag p dengan id total_order_price_text, set textnya jadi total_order_price yang baru
-            $('#total_order_price_text').text('$' + total_order_price);
+            //ambil tag p dengan id total_order_price_text, set textnya jadi order_price yang baru
+            $('#total_order_price_text').text('$' + order_price);
         }
     </script>
 @endsection
