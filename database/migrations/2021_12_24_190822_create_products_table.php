@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name')->nullable();
             $table->string('picture')->nullable();
             $table->string('price')->nullable();
+            $table->string('weight')->nullable();
             $table->integer('discount')->nullable();
             $table->timestamps();
         });

@@ -76,11 +76,11 @@ class OrderController extends Controller
             ->get();
 
         //ambil shipping price dari input
-        $shipping_price = $request->shipping_price;
+        $shipping_price = $request->shipping_price * ceil($carts->sum('total_weight'));
         //hitung total_order_price dari jumlah sub_total dari semua cart tadi + shipping price
         $total_order_price = $carts->sum('sub_total') + $shipping_price;
         //set invoice number sebanyak 14 digit
-        $invoice_number =rand(10000000000000, 99999999999999);
+        $invoice_number = rand(10000000000000, 99999999999999);
         //save order ke database
         $order = Order::query()->create([
             'user_id' => auth()->id(),

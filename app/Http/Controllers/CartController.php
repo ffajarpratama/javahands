@@ -45,9 +45,12 @@ class CartController extends Controller
             $newQuantity = $selectedProduct->quantity + 1;
             //update kolom sub_total di table carts, harga satuan product * jumlah product yang ada di cart
             $newSubTotal = $selectedProduct->unit_price * $newQuantity;
+            //update kolom total_weight di table carts, weight product * jumlah product yang ada di cart
+            $newTotalWeight = $selectedProduct->unit_weight * $newQuantity;
             //update product
             $selectedProduct->update([
                 'quantity' => $newQuantity,
+                'total_weight' => $newTotalWeight,
                 'sub_total' => $newSubTotal
             ]);
 
@@ -55,6 +58,8 @@ class CartController extends Controller
         } else {
             //harga satuan product = harga product
             $productPrice = $product->price;
+            //berat satuan product = berat product
+            $productWeight = $product->weight;
             //set quantity cart = 1
             $quantity = 1;
 
@@ -68,13 +73,17 @@ class CartController extends Controller
 
             //set kolom sub_total di table carts, harga satuan product * jumlah product
             $subTotal = $productPrice * $quantity;
+            //set kolom total_weight di table carts, berat satuan product * jumlah product
+            $totalWeight = $productWeight * $quantity;
 
             //save cart ke database
             Cart::query()->create([
                 'product_id' => $product->id,
                 'user_id' => $user->id,
                 'unit_price' => $productPrice,
+                'unit_weight' => $productWeight,
                 'quantity' => $quantity,
+                'total_weight' => $totalWeight,
                 'sub_total' => $subTotal
             ]);
         }

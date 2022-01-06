@@ -245,6 +245,11 @@
                             </div>
                             <div class="col-md-2 text-center">
                                 <p class="mb-0 fw-700 text-bistre">
+                                    Weight
+                                </p>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <p class="mb-0 fw-700 text-bistre">
                                     Price
                                 </p>
                             </div>
@@ -285,6 +290,11 @@
 
                                 <div class="col-md-2 text-center">
                                     <p class="mb-0 fs-7 text-bistre fw-400">
+                                        {{ $cart->unit_weight . ' kg' }}
+                                    </p>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <p class="mb-0 fs-7 text-bistre fw-400">
                                         {{ '$' . number_format($cart->unit_price) }}
                                     </p>
                                 </div>
@@ -323,7 +333,7 @@
                             </div>
                             <div class="col-md-2 text-center">
                                 <p class="mb-0 fs-7 fw-600 text-bistre">
-                                    0.3 kg
+                                    {{ $order->carts->sum('total_weight') . ' kg' }}
                                 </p>
                             </div>
                         </div>

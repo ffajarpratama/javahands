@@ -148,6 +148,7 @@ class ProductService
         $request->validate([
             'name' => ['required'],
             'price' => ['required', 'numeric'],
+            'weight' => ['required', 'numeric'],
             'discount' => ['required', 'numeric'],
             'picture' => ['required', 'image', 'max:2048'],
             'material' => ['required'],
@@ -170,6 +171,7 @@ class ProductService
         $product = Product::query()->create([
             'name' => $request->name,
             'price' => $request->price,
+            'weight' => $request->weight,
             'discount' => (int)$request->discount,
             'picture' => $imageName,
         ]);
@@ -195,6 +197,7 @@ class ProductService
         $request->validate([
             'name' => ['required'],
             'price' => ['required', 'numeric'],
+            'weight' => ['required', 'numeric'],
             'discount' => ['required', 'numeric'],
             'picture' => ['max:2048'],
             'material' => ['required'],
@@ -228,6 +231,7 @@ class ProductService
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
+            'weight' => $request->weight,
             'discount' => (int)$request->discount,
             'picture' => $newPictureName,
         ]);

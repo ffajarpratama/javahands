@@ -21,6 +21,7 @@ class ProductSeeder extends Seeder
             $product = Product::query()->create([
                 'name' => $faker->words(3, true),
                 'price' => $faker->numberBetween(10, 90),
+                'weight' => $faker->randomFloat(1, 0, 2),
                 'discount' => $faker->numberBetween(20, 50),
             ]);
 

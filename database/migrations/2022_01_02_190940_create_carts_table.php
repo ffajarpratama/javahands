@@ -19,7 +19,9 @@ class CreateCartsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->string('unit_price');
+            $table->string('unit_weight');
             $table->integer('quantity');
+            $table->string('total_weight');
             $table->string('sub_total');
             $table->timestamps();
         });

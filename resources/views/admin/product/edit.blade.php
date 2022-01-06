@@ -66,6 +66,19 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="text-bistre fs-7 fw-700 mb-1" for="weight">Weight (kg)</label>
+                        <input type="text"
+                               class="form-control text-secondary @error('weight') is-invalid @enderror"
+                               name="weight" id="weight" value="{{ $product->weight }}">
+
+                        @error('weight')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
                     <div class="d-flex flex-row mb-3">
                         <div class="col me-2">
                             <label class="text-bistre fs-7 fw-700 mb-1" for="price">Price ($)</label>
