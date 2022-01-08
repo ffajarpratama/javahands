@@ -66,19 +66,24 @@
                     </div>
 
                     <div class="d-flex flex-row align-items-center">
-                        @if($product->discount != 0)
+                        @if($product->discount == 0)
                             <div class="col-md-auto me-2">
-                                <p class="fs-24-px text-strikethrough fw-600 text-black mb-0">
+                                <p class="fs-40-px text-strikethrough fw-600 text-gray-900 mb-0">
                                     {{ '$' . number_format($product->price) }}
                                 </p>
                             </div>
+                        @else
+                            <div class="col-md-auto me-2">
+                                <p class="fs-24-px text-strikethrough fw-600 text-gray-900 mb-0">
+                                    {{ '$' . number_format($product->price) }}
+                                </p>
+                            </div>
+                            <div class="col-md-auto">
+                                <p class="{{ $product->discount != 0 ? 'text-danger' : 'text-gray-900' }} mb-0 fw-600 fs-40-px">
+                                    {{ '$' . number_format($product->getDiscountedPrice()) }}
+                                </p>
+                            </div>
                         @endif
-
-                        <div class="col-md-auto">
-                            <p class="{{ $product->discount != 0 ? 'text-danger' : 'text-gray-900' }} mb-0 fw-600 fs-40-px">
-                                {{ '$' . number_format($product->getDiscountedPrice()) }}
-                            </p>
-                        </div>
                     </div>
                 </div>
 

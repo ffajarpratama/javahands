@@ -348,7 +348,7 @@
                                         name="shipping_price" id="shipping_price" aria-label="shipping_price"
                                         onchange="getShippingPrice()"
                                         style="border: 1px solid #2E190D; box-sizing: border-box; border-radius: 8px;">
-                                        <option value="">Select Shipping Option</option>
+                                        <option value="0">Select Shipping Option</option>
                                         <option value="45">FedEx (Regular) 7-10 Business Days ($45)</option>
                                     </select>
 

@@ -91,4 +91,106 @@ class CartController extends Controller
         //redirect ke halaman yang sama dengan pesan sukses
         return redirect()->back()->with('success', 'Product added to cart!');
     }
+
+    public function updateQuantity(Cart $cart)
+    {
+        //ambil unit price dari cart
+        $unit_price = $cart->unit_price;
+        //ambil unit weight dari cart
+        $unit_weight = $cart->unit_weight;
+        //ambil quantity dari cart
+        $quantity = $cart->quantity;
+
+        //quantity + 1
+        $quantity++;
+        //sub total cart  = unit price dikali quantity
+        $sub_total = $unit_price * $quantity;
+        //total weight cart = unit weight dikali quantity
+        $total_weight = $unit_weight * $quantity;
+
+        //update cart
+        $cart->update([
+            'quantity' => $quantity,
+            'total_weight' => $total_weight,
+            'sub_total' => $sub_total
+        ]);
+
+        //ambil semua cart dimana user id = id user yang login dan order_id = null/belum dicheckout
+        $carts = Cart::query()
+            ->where('user_id', auth()->id())
+            ->where('order_id', null)
+            ->get();
+
+        //jumlahkan total weight dari semua cart yang didapat
+        $total_weight = $carts->sum('total_weight');
+        //jumlahkan sub_total dari semua cart yang didapat
+        $total_price = $carts->sum('sub_total');
+
+        //return cart, jumlah total_weight, dan total_price dalam bentuk array
+        return response()->json([
+            'cart' => $cart,
+            'total_weight' => $total_weight,
+            'total_price' => $total_price
+        ]);
+    }
+
+    public function removeQuantity(Cart $cart)
+    {
+        //ambil unit price dari cart
+        $unit_price = $cart->unit_price;
+        //ambil unit weight dari cart
+        $unit_weight = $cart->unit_weight;
+        //ambil quantity dari cart
+        $quantity = $cart->quantity;
+        //ambil total_weight dari cart
+        $total_weight = $cart->total_weight;
+        //ambil sub_total cart
+        $sub_total = $cart->sub_total;
+
+        //quantity -1
+        $quantity--;
+        //sub_total = sub_total cart dikurangi unit_price
+        $sub_total = $sub_total - $unit_price;
+        //total_weight = total_weight cart dikurangi unit_weight
+        $total_weight = $total_weight - $unit_weight;
+
+        //jika quantity = 0
+        if ($quantity < 1) {
+            //hapus cart
+            $cart->delete();
+            //ubah variable cart menjadi variable kosong
+            $cart = null;
+        } else {
+            //update cart
+            $cart->update([
+                'quantity' => $quantity,
+                'total_weight' => $total_weight,
+                'sub_total' => $sub_total
+            ]);
+        }
+
+        //ambil semua cart dimana user id = id user yang login dan order_id = null/belum dicheckout
+        $carts = Cart::query()
+            ->where('user_id', auth()->id())
+            ->where('order_id', null)
+            ->get();
+
+        //jumlahkan total weight dari semua cart yang didapat
+        $total_weight = $carts->sum('total_weight');
+        //jumlahkan sub_total dari semua cart yang didapat
+        $total_price = $carts->sum('sub_total');
+
+        //return cart, jumlah total_weight, dan total_price dalam bentuk array
+        return response()->json([
+            'cart' => $cart,
+            'total_weight' => $total_weight,
+            'total_price' => $total_price
+        ]);
+    }
+
+    public function delete(Cart $cart)
+    {
+        //delete cart
+        return $cart->delete();
+    }
 }

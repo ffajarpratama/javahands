@@ -197,6 +197,15 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'auth.user'])->group(f
     //url: /user/cart/{id product}/{id user}, method: POST, name: user.cart.store
     Route::post('/cart/{product}/{user}', [CartController::class, 'store'])
         ->name('cart.store');
+    //url: /user/cart/updateQuantity/{id cart}, method: PUT, name: user.cart.updateQuantity
+    Route::put('/cart/updateQuantity/{cart}', [CartController::class, 'updateQuantity'])
+        ->name('cart.updateQuantity');
+    //url: /user/cart/removeQuantity/{id cart}, method: PUT, name: user.cart.removeQuantity
+    Route::put('/cart/removeQuantity/{cart}', [CartController::class, 'removeQuantity'])
+        ->name('cart.removeQuantity');
+    //url: /user/cart/delete/{id cart}, method: DELETE, name: user.cart.delete
+    Route::delete('/cart/delete/{cart}', [CartController::class, 'delete'])
+        ->name('cart.delete');
     //END CART ROUTES===================================================================================
 
     //ORDER ROUTES======================================================================================
