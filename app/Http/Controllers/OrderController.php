@@ -22,6 +22,7 @@ class OrderController extends Controller
         //ambil semua order dari user
         $orders = Order::query()
             ->with(['carts', 'carts.product'])
+            ->whereHas('carts')
             ->where('user_id', $user->id)
             ->latest()
             ->get();
