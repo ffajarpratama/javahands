@@ -121,7 +121,11 @@
                             <div class="d-flex flex-row justify-content-between align-items-center mb-3">
                                 <div class="col-md-7">
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-jh-secondary" disabled>
+                                        <button class="btn btn-jh-secondary"
+                                                id="paypalButton"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#paypalModal"
+                                                data-bs-url="{{ route('user.order.payment', $order->id) }}">
                                             PayPal
                                         </button>
                                     </div>
@@ -403,6 +407,7 @@
         </div>
     </div>
 
+    {{--CREDIT/DEBIT CARD MODAL--}}
     <div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -475,6 +480,58 @@
             </div>
         </div>
     </div>
+    {{--END CREDIT/DEBIT CARD MODAL--}}
+
+    {{--PAYPAL MODAL--}}
+    <div class="modal fade" id="paypalModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="paypalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content px-3" style="background: #FFFFFF; border: 1px solid #000000; border-radius: 23px;">
+                <div class="d-flex flex-row justify-content-end align-items-center p-3">
+                    <button type="button" class="btn-close my-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form id="paypalForm" action="" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body mb-3">
+                        <div class="row g-0 mb-1">
+                            <label for="email" class="mb-0 fs-7 text-bistre fw-700">
+                                Your PayPal Email
+                            </label>
+                        </div>
+
+                        <div class="row g-0 mb-3">
+                            <input type="email" class="form-control form-control-sm" name="email" id="email"
+                                   placeholder="Email" aria-label="email" required>
+                        </div>
+
+                        <div class="row g-0 mb-1">
+                            <label for="password" class="mb-0 fs-7 text-bistre fw-700">
+                                Your Password
+                            </label>
+                        </div>
+
+                        <div class="row g-0 mb-3">
+                            <input type="password" class="form-control form-control-sm" name="password" id="password"
+                                   placeholder="Password" aria-label="password" required>
+                        </div>
+
+                        <div class="row g-0">
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-jh-primary">
+                                        Pay Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{--END PAYPAL MODAL--}}
 @endsection
 @section('script')
     <script>
@@ -487,6 +544,16 @@
             //set action = url dari data-bs-url pada form dengan id paymentForm pada payment modal
             paymentModal.querySelector('#paymentForm').action = button.getAttribute('data-bs-url');
         });
+
+        //modal untuk paypal
+        const paypalModal = document.getElementById('paypalModal');
+        //saat modal ditampilkan, jalankan function
+        paypalModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            //ambil value dari attribute data-bs-url
+            //set action = url dari data-bs-url pada form dengan id paypalForm pada paypalModal
+            paypalModal.querySelector('#paypalForm').action = button.getAttribute('data-bs-url');
+        })
     </script>
 @endsection
 @section('footer')
